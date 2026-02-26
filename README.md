@@ -1,10 +1,10 @@
-# Sutra AI
+# Sutra AI — AI-Powered Intelligent Programming Learning System
 
 Sutra AI is an adaptive AI-powered platform designed to help users master programming logic in **C**, **Python**, and **Data Structures & Algorithms (DSA)**.  
 
 It uses **Gemini AI** for personalized hints, real-time code analysis, and a unique mobile **"Lens"** feature for scanning handwritten notes or screens. The platform includes an interactive IDE, progress tracking, achievements, and intelligent fuzzy search for problems.
 
-## Project Synopsis
+## About Sutra AI
 
 Sutra AI addresses common challenges in coding education by providing:
 
