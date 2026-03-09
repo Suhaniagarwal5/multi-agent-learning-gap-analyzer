@@ -1,15 +1,19 @@
-from fastapi import FastAPI, Body
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import socketio
+import json
+import os
+from typing import List
+
 from core.hints import get_level_hint 
+from core.search import perform_fuzzy_search, fuzzy_match_strings
 
 app = FastAPI()
 
-# 1. Socket.io Setup
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*')
 socket_app = socketio.ASGIApp(sio)
 
-# 2. CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,49 +21,49 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- SOCKET EVENTS ---
+# Request Models
+class SearchRequest(BaseModel):
+    query: str
+    topic: str
+
+class StringMatchRequest(BaseModel):
+    query: str
+    targets: List[str]
+
+# 1. API FOR QUESTIONS (Page 3)
+@app.post("/api/search")
+async def search_endpoint(req: SearchRequest):
+    try:
+        file_path = os.path.join(os.path.dirname(__file__), "problems.json")
+        with open(file_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            
+        results = perform_fuzzy_search(req.query, req.topic, data)
+        return {"results": results}
+    except Exception as e:
+        return {"error": str(e), "results": []}
+
+# 2. NAYI API FOR COURSES & CATEGORIES (Page 1 & 2)
+@app.post("/api/match-strings")
+async def match_strings_endpoint(req: StringMatchRequest):
+    # Frontend se aayi list of strings ko Levenshtein logic se filter karega
+    results = fuzzy_match_strings(req.query, req.targets)
+    return {"results": results}
 
 @sio.on("join_problem")
 async def handle_join(sid, data):
-    # Laptop aur Mobile dono isse join karenge: socket.emit("join_problem", {problemId: "DSA-01"})
     room = data['problemId']
     sio.enter_room(sid, room)
-    print(f"Client {sid} joined room: {room}")
 
 @sio.on("lens_frame")
 async def handle_lens_frame(sid, data):
-    frame = data['frame'] # Base64 Image
+    frame = data['frame']
     problem_id = data['problemId']
-    
-    # 3. Gemini Vision Logic
-    # Yahan hum 'image_data' parameter pass kar rahe hain jo hints.py handle karega
-    hint = get_level_hint(
-        level=1, 
-        code="", 
-        problem_title="Visual Analysis", 
-        description="User shared a frame via Sutra Lens", 
-        image_data=frame
-    )
-    
-    print(f"Gemini Lens Hint for {problem_id}: {hint}")
-    
-    # 4. FIX: Room mein hint bhejna taaki IDE (Laptop) ko mile
+    hint = get_level_hint(1, "", "Visual Analysis", "User shared a frame", frame)
     await sio.emit("lens_hint", {"hint": hint}, room=problem_id)
 
-# --- HTTP ENDPOINTS ---
-
-@app.post("/ai/hint")
-async def ai_hint(payload: dict = Body(...)):
-    level = payload.get("level", 1)
-    code = payload.get("code", "")
-    problem_title = payload.get("problem", "")
-    description = payload.get("description", "")
-    
-    hint = get_level_hint(level, code, problem_title, description)
-    return {"hint": hint}
-
-# 5. Mount & Run
 app.mount("/ws", socket_app)
 
-# Run command:
+
+# Run command terminal ke liye:
 # uvicorn main:app --host 0.0.0.0 --port 8000 --reload
