@@ -118,7 +118,7 @@ const TopicList = () => {
             <input
               type="text"
               value={searchTerm}
-              placeholder={selectedCategory ? "Search questions (e.g. Hepp)..." : "Search categories..."}
+              placeholder={selectedCategory ? "Search questions..." : "Search categories..."}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-zinc-900 border border-zinc-700 rounded-full py-3 pl-12 pr-6 text-sm focus:border-cyan-500 focus:outline-none transition-all"
             />

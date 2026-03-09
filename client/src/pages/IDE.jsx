@@ -9,9 +9,9 @@ import { Camera, Mic, Volume2, Lightbulb, X, Terminal, Play, Send, CheckCircle }
 // ── Read from .env (add these to your client/.env file)
 // VITE_NODE_URL=http://localhost:5000
 // VITE_AI_URL=http://10.160.108.166:8000   ← your laptop IP
-const NODE_URL  = import.meta.env.VITE_NODE_URL || 'http://localhost:5000';
-const AI_URL    = import.meta.env.VITE_AI_URL   || 'http://10.160.108.166:8000';
-const lensBaseURL = import.meta.env.VITE_LENS_URL || `http://10.160.108.166:5173`;
+const NODE_URL  = import.meta.env.VITE_NODE_URL;
+const AI_URL    = import.meta.env.VITE_AI_URL;
+const lensBaseURL = import.meta.env.VITE_LENS_URL;
 
 const IDE = () => {
   const { problemId } = useParams();

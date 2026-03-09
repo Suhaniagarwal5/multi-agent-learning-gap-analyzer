@@ -1,4 +1,3 @@
-# core/search.py
 
 def levenshtein_distance(s1, s2):
     '''
