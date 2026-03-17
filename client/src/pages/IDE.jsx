@@ -6,6 +6,9 @@ import io from 'socket.io-client';
 import { useAuth } from '../context/AuthContext';
 import { Camera, Mic, Volume2, Lightbulb, X, Terminal, Play, Send, CheckCircle, Loader } from 'lucide-react';
 
+const JUDGE0_URL = "https://ce.judge0.com";
+const LANGUAGE_ID = { Python: 71, C: 50, python: 71, c: 50 };
+
 const NODE_URL  = import.meta.env.VITE_NODE_URL;
 const AI_URL    = import.meta.env.VITE_AI_URL;
 const lensBaseURL = import.meta.env.VITE_LENS_URL;
@@ -111,33 +114,134 @@ const IDE = () => {
 
 
   // ── 3. RUN ────────────────────────────────────────────────
-  const handleRun = () => {
-    setOutput(prev => prev + "\n> Running test cases...\n> Result: Passed (logic detected)");
+  const handleRun = async () => {
+  if (!problem) return;
+  setOutput("> Running your code...");
+  setSubmitState('submitting');
+ 
+  const langId = LANGUAGE_ID[problem.language] || 71;
+ 
+  try {
+    // Step 1 — Submit code to Judge0
+    const submitRes = await axios.post(
+      `${JUDGE0_URL}/submissions?base64_encoded=false&wait=true`,
+      {
+        source_code: code,
+        language_id: langId,
+        stdin: problem.testCases?.[0]?.input || "",
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+ 
+    const result = submitRes.data;
+ 
+    // Step 2 — Show output
+    if (result.stdout) {
+      setOutput(prev => prev + `\n> Output:\n${result.stdout}`);
+    }
+    if (result.stderr) {
+      setOutput(prev => prev + `\n> Error:\n${result.stderr}`);
+    }
+    if (result.compile_output) {
+      setOutput(prev => prev + `\n> Compile Error:\n${result.compile_output}`);
+    }
+    if (!result.stdout && !result.stderr && !result.compile_output) {
+      setOutput(prev => prev + `\n> No output produced.`);
+    }
+ 
+    // Save as attempted
     saveProgress('attempted');
-  };
+ 
+  } catch (err) {
+    setOutput(prev => prev + `\n> Execution failed. Check your code or try again.`);
+    console.error("Judge0 error:", err);
+  } finally {
+    setSubmitState('idle');
+  }
+};
 
 
   // ── 4. SUBMIT ─────────────────────────────────────────────
   const handleSubmit = async () => {
-    setSubmitState('submitting');
-    setOutput(prev => prev + "\n> Submitting...");
-
-    await new Promise(r => setTimeout(r, 1000));
-    const passed = true; 
-
-    if (passed) {
+  if (!problem) return;
+  setSubmitState('submitting');
+  setOutput("> Submitting — running all test cases...");
+  const langId = LANGUAGE_ID[problem.language] || 71;
+  const testCases = problem.testCases || [];
+ 
+  if (testCases.length === 0) {
+    setOutput(prev => prev + "\n> No test cases found for this problem.");
+    setSubmitState('idle');
+    return;
+  }
+ 
+  try {
+    let passed = 0;
+    let failed = 0;
+    let results = [];
+ 
+    // Run each test case one by one
+    for (let i = 0; i < testCases.length; i++) {
+      const tc = testCases[i];
+ 
+      const res = await axios.post(
+        `${JUDGE0_URL}/submissions?base64_encoded=false&wait=true`,
+        {
+          source_code: code,
+          language_id: langId,
+          stdin: tc.input || "",
+          expected_output: tc.output || "",
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
+ 
+      const r = res.data;
+      const actual   = (r.stdout || "").trim();
+      const expected = (tc.output || "").trim();
+      const ok       = actual === expected && !r.stderr && !r.compile_output;
+ 
+      if (ok) {
+        passed++;
+        results.push(`  ✅ Test ${i + 1}: Passed`);
+      } else {
+        failed++;
+        // Show what went wrong
+        if (r.compile_output) {
+          results.push(`  ❌ Test ${i + 1}: Compile Error — ${r.compile_output.split('\n')[0]}`);
+        } else if (r.stderr) {
+          results.push(`  ❌ Test ${i + 1}: Runtime Error — ${r.stderr.split('\n')[0]}`);
+        } else {
+          results.push(`  ❌ Test ${i + 1}: Wrong Answer`);
+          results.push(`     Expected: ${expected}`);
+          results.push(`     Got:      ${actual}`);
+        }
+      }
+    }
+ 
+    // Show final result
+    const summary = `\n> Results: ${passed}/${testCases.length} test cases passed\n` + results.join('\n');
+    setOutput(prev => prev + summary);
+ 
+    if (passed === testCases.length) {
       setSubmitState('passed');
-      setOutput(prev => prev + "\n✅ 10/10 Test cases passed! Problem solved.");
-      await saveProgress('solved'); 
+      setOutput(prev => prev + `\n\n🎉 All test cases passed! Problem solved.`);
+      await saveProgress('solved');
     } else {
       setSubmitState('failed');
-      setOutput(prev => prev + "\n❌ Some test cases failed. Keep trying!");
+      setOutput(prev => prev + `\n\nKeep trying — ${failed} test case(s) failed.`);
       await saveProgress('attempted');
     }
-
-    setTimeout(() => setSubmitState('idle'), 3000);
-  };
-
+ 
+  } catch (err) {
+    setOutput(prev => prev + `\n> Submission failed. Check connection or try again.`);
+    setSubmitState('failed');
+    console.error("Judge0 submit error:", err);
+  }
+ 
+  setTimeout(() => setSubmitState('idle'), 4000);
+};
 
   // ── 5. VOICE THOUGHTS ─────────────────────────────────────
   const startThoughtCapture = () => {

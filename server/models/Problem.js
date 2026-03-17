@@ -12,7 +12,13 @@ const problemSchema = new mongoose.Schema({
   outputFormat: String,
   constraints: String,
   explanation: String,
-  starterCode: String
+  starterCode: String,
+  testCases: [
+  {
+    input:  { type: String },
+    output: { type: String }
+  }
+]
 });
 
 module.exports = mongoose.model('Problem', problemSchema);

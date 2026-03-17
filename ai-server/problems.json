@@ -1,1263 +1,1843 @@
 [
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-001",
     "title": "Dynamic Lane Management",
-    "description": "You are managing a lane where people stand in order. Initially, N people are present in the lane.\nYou are then given M operations. Each operation is either insertion or deletion at a specified\nposition. Process all operations efficiently and output the final order.",
-    "language": "C",
+    "description": "You are managing a lane where people stand in order. Initially, N people are present in the lane.\nYou are then given M operations. Each operation is either insertion (I position value) or deletion (D position) at a specified position.\nProcess all operations efficiently and output the final order.",
+    "language": "Python",
     "category": "Linked List",
     "difficulty": "Medium",
-    "inputFormat": "N\nN integers\nM\n(type position value)",
-    "outputFormat": "Final order of people",
-    "constraints": "1 ≤ N, M ≤ 10^5",
-    "explanation": "Efficient insert/delete operations require a linked list or balanced structure.",
-    "starterCode": "// Implement linked list logic\n"
+    "inputFormat": "First line: N\nSecond line: N integers\nThird line: M\nNext M lines: operation type, position, and value (for insertion)",
+    "outputFormat": "Space-separated final order of elements",
+    "constraints": "1 ≤ N, M ≤ 10^4",
+    "explanation": "Use a Python list to simulate insert and delete at positions.",
+    "starterCode": "n = int(input())\nlane = list(map(int, input().split()))\nm = int(input())\nfor _ in range(m):\n    op = input().split()\n    # 'I pos val' = insert, 'D pos' = delete\n    # Write your logic here\nprint(*lane)\n",
+    "testCases": [
+      { "input": "4\n1 2 3 4\n2\nI 2 10\nD 4", "output": "1 2 10 3" },
+      { "input": "3\n5 6 7\n1\nD 1", "output": "6 7" },
+      { "input": "2\n1 2\n2\nI 1 0\nI 3 9", "output": "0 1 9 2" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-002",
     "title": "Kth Largest Without Sorting",
-    "description": "Given an array of integers and an integer K, return the Kth largest element. Sorting is not allowed.\nThe solution must be optimized.",
-    "language": "C",
+    "description": "Given an array of integers and an integer K, return the Kth largest element.\nYou cannot sort the array. Use a heap-based approach for O(n log k) time.",
+    "language": "Python",
     "category": "Heap",
     "difficulty": "Medium",
-    "inputFormat": "n\narray\nk",
-    "outputFormat": "Kth largest element",
-    "constraints": "1 ≤ n ≤ 10^5",
-    "explanation": "Maintain a min-heap of size K to track the K largest elements.",
-    "starterCode": "# Implement heap-based solution\n"
+    "inputFormat": "First line: n\nSecond line: n integers\nThird line: k",
+    "outputFormat": "Single integer — the Kth largest element",
+    "constraints": "1 ≤ k ≤ n ≤ 10^5",
+    "explanation": "Maintain a min-heap of size K. The root will be the Kth largest.",
+    "starterCode": "import heapq\nn = int(input())\narr = list(map(int, input().split()))\nk = int(input())\n# Write your heap logic here\n",
+    "testCases": [
+      { "input": "6\n3 2 1 5 6 4\n2", "output": "5" },
+      { "input": "5\n1 2 3 4 5\n1", "output": "5" },
+      { "input": "4\n7 10 4 3\n3", "output": "4" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-003",
-    "title": "Binary Search on Answer Variant 3",
-    "description": "Solve the problem of binary search on answer under the given constraints.",
-    "language": "C",
+    "title": "Find Square Root (Binary Search)",
+    "description": "Given a non-negative integer N, find the integer square root of N using binary search.\nReturn the largest integer x such that x*x <= N. Do not use sqrt().",
+    "language": "Python",
     "category": "Binary Search",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Single integer N",
+    "outputFormat": "Integer square root of N",
+    "constraints": "0 ≤ N ≤ 10^9",
+    "explanation": "Binary search between 0 and N/2. Check if mid*mid <= N.",
+    "starterCode": "n = int(input())\n# Binary search for sqrt\nlo, hi = 0, n\n# Write your logic here\n",
+    "testCases": [
+      { "input": "16", "output": "4" },
+      { "input": "25", "output": "5" },
+      { "input": "10", "output": "3" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-004",
-    "title": "Balanced Parentheses Checker Variant 4",
-    "description": "Solve the problem of balanced parentheses checker under the given constraints.",
-    "language": "C",
+    "title": "Balanced Parentheses Checker",
+    "description": "Given a string containing only '(', ')', '{', '}', '[', ']', determine if the input string is valid.\nA string is valid if every open bracket is closed by the same type in the correct order.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "A single string of brackets",
+    "outputFormat": "True or False",
+    "constraints": "1 ≤ length ≤ 10^5",
+    "explanation": "Use a stack. Push open brackets, pop and match on close brackets.",
+    "starterCode": "s = input()\nstack = []\n# Write your stack logic here\n",
+    "testCases": [
+      { "input": "()[]{}", "output": "True" },
+      { "input": "([)]", "output": "False" },
+      { "input": "{[]}", "output": "True" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-005",
-    "title": "Binary Search on Answer Variant 5",
-    "description": "Solve the problem of binary search on answer under the given constraints.",
-    "language": "C",
+    "title": "Minimum Pages Allocation (Binary Search on Answer)",
+    "description": "Given N books with pages[] and M students, allocate books to minimise the maximum pages assigned to any student.\nEach student must get at least one book. Books must be allocated contiguously.",
+    "language": "Python",
     "category": "Binary Search",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n m\nSecond line: n integers (pages)",
+    "outputFormat": "Minimum possible maximum pages",
+    "constraints": "1 ≤ n ≤ 10^4, 1 ≤ m ≤ n",
+    "explanation": "Binary search on answer. Check if allocation is possible within mid pages.",
+    "starterCode": "n, m = map(int, input().split())\npages = list(map(int, input().split()))\n# Binary search on answer\n",
+    "testCases": [
+      { "input": "4 2\n12 34 67 90", "output": "113" },
+      { "input": "3 2\n10 20 30", "output": "40" },
+      { "input": "5 3\n1 2 3 4 5", "output": "5" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-006",
-    "title": "Sliding Window Maximum Variant 6",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Sliding Window Maximum",
+    "description": "Given an array of integers and a window size K, find the maximum element in every sliding window of size K.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n k\nSecond line: n integers",
+    "outputFormat": "Space-separated maximums for each window",
+    "constraints": "1 ≤ k ≤ n ≤ 10^5",
+    "explanation": "Use a deque to maintain indices of useful elements in decreasing order.",
+    "starterCode": "from collections import deque\nn, k = map(int, input().split())\narr = list(map(int, input().split()))\ndq = deque()\nresult = []\n# Write your deque logic here\n",
+    "testCases": [
+      { "input": "8 3\n1 3 -1 -3 5 3 6 7", "output": "3 3 5 5 6 7" },
+      { "input": "5 2\n2 1 5 3 4", "output": "2 5 5 4" },
+      { "input": "4 1\n4 3 2 1", "output": "4 3 2 1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-007",
-    "title": "LRU Cache Simulation Variant 7",
-    "description": "Solve the problem of lru cache simulation under the given constraints.",
-    "language": "C",
+    "title": "LRU Cache Simulation",
+    "description": "Design a data structure that follows the Least Recently Used cache eviction policy.\nImplement get(key) and put(key, value) operations. Both must run in O(1).",
+    "language": "Python",
     "category": "Design",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: capacity\nSecond line: Q (number of operations)\nNext Q lines: GET key OR PUT key value",
+    "outputFormat": "For each GET, print the value or -1 if not found",
+    "constraints": "1 ≤ capacity ≤ 1000, 1 ≤ Q ≤ 10^4",
+    "explanation": "Use OrderedDict or a combination of dict + doubly linked list.",
+    "starterCode": "from collections import OrderedDict\ncapacity = int(input())\nq = int(input())\ncache = OrderedDict()\n# Write your LRU logic here\n",
+    "testCases": [
+      { "input": "2\n5\nPUT 1 10\nPUT 2 20\nGET 1\nPUT 3 30\nGET 2", "output": "10\n-1" },
+      { "input": "1\n3\nPUT 1 5\nGET 1\nGET 2", "output": "5\n-1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-008",
-    "title": "Sliding Window Maximum Variant 8",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Maximum Sum Subarray (Kadane's)",
+    "description": "Given an integer array, find the contiguous subarray with the largest sum and return that sum.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Maximum subarray sum",
+    "constraints": "1 ≤ n ≤ 10^5, -10^4 ≤ arr[i] ≤ 10^4",
+    "explanation": "Kadane's algorithm: track current sum and global max.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\n# Kadane's algorithm\n",
+    "testCases": [
+      { "input": "9\n-2 1 -3 4 -1 2 1 -5 4", "output": "6" },
+      { "input": "1\n-1", "output": "-1" },
+      { "input": "5\n1 2 3 4 5", "output": "15" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-009",
-    "title": "LRU Cache Simulation Variant 9",
-    "description": "Solve the problem of lru cache simulation under the given constraints.",
-    "language": "C",
+    "title": "LRU Cache with Frequency Count",
+    "description": "Implement an LFU (Least Frequently Used) cache. When capacity is full, evict the least frequently used item. On tie, evict the least recently used among them.",
+    "language": "Python",
     "category": "Design",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: capacity\nSecond line: Q\nNext Q lines: GET key OR PUT key value",
+    "outputFormat": "For each GET, output the value or -1",
+    "constraints": "1 ≤ capacity ≤ 100, 1 ≤ Q ≤ 1000",
+    "explanation": "Track frequency of each key. On eviction pick min frequency key.",
+    "starterCode": "from collections import defaultdict, OrderedDict\ncapacity = int(input())\nq = int(input())\n# Write LFU logic here\n",
+    "testCases": [
+      { "input": "2\n4\nPUT 1 1\nPUT 2 2\nGET 1\nPUT 3 3", "output": "1" },
+      { "input": "1\n3\nPUT 1 10\nGET 1\nGET 1", "output": "10\n10" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-010",
-    "title": "Top K Frequent Words Variant 10",
-    "description": "Solve the problem of top k frequent words under the given constraints.",
-    "language": "C",
+    "title": "Top K Frequent Words",
+    "description": "Given a list of words and an integer K, return the K most frequent words.\nIn case of tie, sort alphabetically. Output one word per line.",
+    "language": "Python",
     "category": "Hashing",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n space-separated words\nThird line: k",
+    "outputFormat": "K most frequent words, one per line",
+    "constraints": "1 ≤ n ≤ 10^4, 1 ≤ k ≤ unique words",
+    "explanation": "Use Counter. Sort by (-frequency, word) and take first k.",
+    "starterCode": "from collections import Counter\nn = int(input())\nwords = input().split()\nk = int(input())\n# Write your logic here\n",
+    "testCases": [
+      { "input": "6\ni love leetcode i love coding\n2", "output": "i\nlove" },
+      { "input": "5\nthe day is sunny the\n2", "output": "the\nday" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-011",
-    "title": "Merge Overlapping Intervals Variant 11",
-    "description": "Solve the problem of merge overlapping intervals under the given constraints.",
-    "language": "C",
+    "title": "Merge Overlapping Intervals",
+    "description": "Given a list of intervals [start, end], merge all overlapping intervals and return the result sorted by start time.",
+    "language": "Python",
     "category": "Greedy",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nNext n lines: start end",
+    "outputFormat": "Merged intervals, one per line as 'start end'",
+    "constraints": "1 ≤ n ≤ 10^4",
+    "explanation": "Sort by start. If current start <= prev end, merge by taking max of ends.",
+    "starterCode": "n = int(input())\nintervals = [list(map(int, input().split())) for _ in range(n)]\nintervals.sort()\n# Write merge logic here\n",
+    "testCases": [
+      { "input": "4\n1 3\n2 6\n8 10\n15 18", "output": "1 6\n8 10\n15 18" },
+      { "input": "3\n1 4\n4 5\n6 8", "output": "1 5\n6 8" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-012",
-    "title": "Expression Evaluation Variant 12",
-    "description": "Solve the problem of expression evaluation under the given constraints.",
-    "language": "C",
+    "title": "Evaluate Postfix Expression",
+    "description": "Evaluate a postfix (Reverse Polish Notation) expression.\nSupported operators: +, -, *, /\nDivision is integer division (truncate toward zero).",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Space-separated postfix tokens",
+    "outputFormat": "Integer result",
+    "constraints": "1 ≤ tokens ≤ 10^4",
+    "explanation": "Use a stack. Push numbers. On operator, pop two values and compute.",
+    "starterCode": "tokens = input().split()\nstack = []\n# Write postfix evaluation here\n",
+    "testCases": [
+      { "input": "2 1 + 3 *", "output": "9" },
+      { "input": "4 13 5 / +", "output": "6" },
+      { "input": "10 6 9 3 + -11 * / * 17 + 5 +", "output": "22" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-013",
-    "title": "Expression Evaluation Variant 13",
-    "description": "Solve the problem of expression evaluation under the given constraints.",
-    "language": "C",
+    "title": "Infix to Postfix Conversion",
+    "description": "Convert a given infix expression to postfix notation.\nSupported operators: +, -, *, / with standard precedence.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Infix expression (space-separated tokens)",
+    "outputFormat": "Postfix expression",
+    "constraints": "Length ≤ 100",
+    "explanation": "Use operator stack with precedence rules. Push operands directly.",
+    "starterCode": "expr = input().split()\nstack = []\nresult = []\nprec = {'+':1, '-':1, '*':2, '/':2}\n# Write infix to postfix here\n",
+    "testCases": [
+      { "input": "a + b * c", "output": "a b c * +" },
+      { "input": "( a + b ) * c", "output": "a b + c *" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-014",
-    "title": "Sliding Window Maximum Variant 14",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Next Greater Element",
+    "description": "For each element in an array, find the next greater element to its right.\nIf no greater element exists, output -1 for that position.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Space-separated next greater elements",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Use a monotonic stack. Process right to left.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\nstack = []\nresult = [-1] * n\n# Write monotonic stack logic here\n",
+    "testCases": [
+      { "input": "5\n4 5 2 10 8", "output": "5 10 10 -1 -1" },
+      { "input": "3\n3 2 1", "output": "-1 -1 -1" },
+      { "input": "4\n1 2 3 4", "output": "2 3 4 -1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-015",
-    "title": "Shortest Path in Grid Variant 15",
-    "description": "Solve the problem of shortest path in grid under the given constraints.",
-    "language": "C",
+    "title": "Shortest Path in Grid (BFS)",
+    "description": "Given a binary grid of size N×M (0=open, 1=blocked), find the shortest path from top-left (0,0) to bottom-right (N-1,M-1).\nReturn the number of steps or -1 if no path exists.",
+    "language": "Python",
     "category": "Graph",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n m\nNext n lines: m space-separated 0/1 values",
+    "outputFormat": "Minimum steps or -1",
+    "constraints": "1 ≤ n,m ≤ 100",
+    "explanation": "BFS from (0,0). Each step moves to adjacent open cells.",
+    "starterCode": "from collections import deque\nn, m = map(int, input().split())\ngrid = [list(map(int, input().split())) for _ in range(n)]\n# BFS here\n",
+    "testCases": [
+      { "input": "3 3\n0 0 0\n0 1 0\n0 0 0", "output": "4" },
+      { "input": "2 2\n0 1\n1 0", "output": "-1" },
+      { "input": "1 1\n0", "output": "0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-016",
-    "title": "Binary Search on Answer Variant 16",
-    "description": "Solve the problem of binary search on answer under the given constraints.",
-    "language": "C",
+    "title": "Search in Rotated Array",
+    "description": "Given a sorted array rotated at some pivot, search for a target element.\nReturn its index or -1 if not found. Must be O(log n).",
+    "language": "Python",
     "category": "Binary Search",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers\nThird line: target",
+    "outputFormat": "Index of target or -1",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Modified binary search — determine which half is sorted first.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\ntarget = int(input())\nlo, hi = 0, n - 1\n# Binary search in rotated array\n",
+    "testCases": [
+      { "input": "7\n4 5 6 7 0 1 2\n0", "output": "4" },
+      { "input": "7\n4 5 6 7 0 1 2\n3", "output": "-1" },
+      { "input": "1\n1\n0", "output": "-1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-017",
-    "title": "Task Scheduler with Cooldown Variant 17",
-    "description": "Solve the problem of task scheduler with cooldown under the given constraints.",
-    "language": "C",
+    "title": "Task Scheduler with Cooldown",
+    "description": "Given a list of CPU tasks and a cooldown period N, find the minimum time needed to finish all tasks.\nSame tasks must be separated by at least N intervals.",
+    "language": "Python",
     "category": "Heap",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: tasks (space-separated letters)\nSecond line: cooldown n",
+    "outputFormat": "Minimum time units",
+    "constraints": "1 ≤ tasks ≤ 10^4, 0 ≤ n ≤ 100",
+    "explanation": "Use a max heap. Fill idle slots with most frequent remaining tasks.",
+    "starterCode": "import heapq\nfrom collections import Counter\ntasks = input().split()\nn = int(input())\nfreq = Counter(tasks)\n# Greedy heap approach here\n",
+    "testCases": [
+      { "input": "A A A B B B\n2", "output": "8" },
+      { "input": "A A A B B B\n0", "output": "6" },
+      { "input": "A A A A B B\n2", "output": "10" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-018",
-    "title": "Binary Search on Answer Variant 18",
-    "description": "Solve the problem of binary search on answer under the given constraints.",
-    "language": "C",
+    "title": "Find First and Last Position",
+    "description": "Given a sorted array and a target value, find the first and last position of the target.\nIf target not found, return -1 -1. Must be O(log n).",
+    "language": "Python",
     "category": "Binary Search",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers\nThird line: target",
+    "outputFormat": "First and last index separated by space",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Two binary searches — one for leftmost, one for rightmost occurrence.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\ntarget = int(input())\n# Two binary searches\n",
+    "testCases": [
+      { "input": "6\n5 7 7 8 8 10\n8", "output": "3 4" },
+      { "input": "6\n5 7 7 8 8 10\n6", "output": "-1 -1" },
+      { "input": "1\n1\n1", "output": "0 0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-019",
-    "title": "Sliding Window Maximum Variant 19",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Minimum Window Substring",
+    "description": "Given strings S and T, find the minimum window in S that contains all characters of T.\nReturn the minimum window or empty string if none exists.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: string S\nSecond line: string T",
+    "outputFormat": "Minimum window substring or empty string",
+    "constraints": "1 ≤ len(S), len(T) ≤ 10^4",
+    "explanation": "Sliding window with two pointers. Expand right, shrink left when valid.",
+    "starterCode": "from collections import Counter\ns = input()\nt = input()\nneed = Counter(t)\n# Sliding window here\n",
+    "testCases": [
+      { "input": "ADOBECODEBANC\nABC", "output": "BANC" },
+      { "input": "a\na", "output": "a" },
+      { "input": "a\naa", "output": "" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-020",
-    "title": "LRU Cache Simulation Variant 20",
-    "description": "Solve the problem of lru cache simulation under the given constraints.",
-    "language": "C",
+    "title": "LRU Cache Implementation",
+    "description": "Implement an LRU Cache of given capacity.\nSupport get(key) and put(key, value) in O(1). Evict least recently used when full.",
+    "language": "Python",
     "category": "Design",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: capacity\nSecond line: Q operations\nNext Q lines: GET key OR PUT key value",
+    "outputFormat": "Output for each GET operation",
+    "constraints": "1 ≤ capacity ≤ 3000",
+    "explanation": "Use OrderedDict. On get, move to end. On put, add to end and evict first if over capacity.",
+    "starterCode": "from collections import OrderedDict\ncapacity = int(input())\nq = int(input())\ncache = OrderedDict()\n# Write LRU get/put logic\n",
+    "testCases": [
+      { "input": "2\n5\nPUT 1 1\nPUT 2 2\nGET 1\nPUT 3 3\nGET 2", "output": "1\n-1" },
+      { "input": "2\n4\nPUT 1 10\nPUT 2 20\nGET 1\nGET 2", "output": "10\n20" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-021",
-    "title": "Detect Cycle in Linked List Variant 21",
-    "description": "Solve the problem of detect cycle in linked list under the given constraints.",
-    "language": "C",
+    "title": "Detect Cycle in Linked List",
+    "description": "Given a linked list represented as an array with a tail index (-1 if no cycle), detect if there is a cycle.\nIf cycle exists, print True, else False.",
+    "language": "Python",
     "category": "Linked List",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n values\nThird line: tail connects to index (-1 if none)",
+    "outputFormat": "True or False",
+    "constraints": "0 ≤ n ≤ 10^4",
+    "explanation": "Floyd's cycle detection — slow and fast pointer. If they meet, cycle exists.",
+    "starterCode": "n = int(input())\nvalues = list(map(int, input().split()))\ntail_connects = int(input())\n# Simulate with Floyd's algorithm\n# tail_connects = index where last node points (-1 = no cycle)\n",
+    "testCases": [
+      { "input": "4\n3 2 0 4\n1", "output": "True" },
+      { "input": "2\n1 2\n-1", "output": "False" },
+      { "input": "1\n1\n-1", "output": "False" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-022",
-    "title": "Detect Cycle in Linked List Variant 22",
-    "description": "Solve the problem of detect cycle in linked list under the given constraints.",
-    "language": "C",
+    "title": "Reverse Linked List",
+    "description": "Given a singly linked list as an array, reverse it and print the result.",
+    "language": "Python",
     "category": "Linked List",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n values",
+    "outputFormat": "Reversed list space-separated",
+    "constraints": "0 ≤ n ≤ 10^5",
+    "explanation": "Reverse the array — simulates reversing linked list pointers.",
+    "starterCode": "n = int(input())\nif n == 0:\n    print()\nelse:\n    values = list(map(int, input().split()))\n    # Reverse and print\n",
+    "testCases": [
+      { "input": "5\n1 2 3 4 5", "output": "5 4 3 2 1" },
+      { "input": "1\n42", "output": "42" },
+      { "input": "3\n10 20 30", "output": "30 20 10" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-023",
-    "title": "Expression Evaluation Variant 23",
-    "description": "Solve the problem of expression evaluation under the given constraints.",
-    "language": "C",
+    "title": "Valid Parentheses with Priority",
+    "description": "Given a string of brackets, check validity AND return the maximum nesting depth.\nOutput: Valid/Invalid followed by max depth.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "A string of brackets",
+    "outputFormat": "Valid/Invalid\\nMax depth: d",
+    "constraints": "1 ≤ length ≤ 10^5",
+    "explanation": "Stack for validation. Track depth while processing.",
+    "starterCode": "s = input()\nstack = []\nmax_depth = 0\ndepth = 0\n# Check validity and track depth\n",
+    "testCases": [
+      { "input": "((()))", "output": "Valid\nMax depth: 3" },
+      { "input": "([)]", "output": "Invalid\nMax depth: 0" },
+      { "input": "{[()]}", "output": "Valid\nMax depth: 3" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-024",
-    "title": "Expression Evaluation Variant 24",
-    "description": "Solve the problem of expression evaluation under the given constraints.",
-    "language": "C",
+    "title": "Largest Rectangle in Histogram",
+    "description": "Given an array of bar heights representing a histogram, find the area of the largest rectangle.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n heights",
+    "outputFormat": "Maximum rectangle area",
+    "constraints": "1 ≤ n ≤ 10^5, 0 ≤ height ≤ 10^4",
+    "explanation": "Use stack to track previous smaller bars. Calculate area when popping.",
+    "starterCode": "n = int(input())\nheights = list(map(int, input().split()))\nstack = []\nmax_area = 0\n# Stack-based solution\n",
+    "testCases": [
+      { "input": "6\n2 1 5 6 2 3", "output": "10" },
+      { "input": "2\n2 4", "output": "4" },
+      { "input": "1\n5", "output": "5" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-025",
-    "title": "Task Scheduler with Cooldown Variant 25",
-    "description": "Solve the problem of task scheduler with cooldown under the given constraints.",
-    "language": "C",
+    "title": "Reorganize String (Cooldown)",
+    "description": "Given a string, reorganize it so that no two adjacent characters are the same.\nIf not possible, return empty string.",
+    "language": "Python",
     "category": "Heap",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "A string",
+    "outputFormat": "Reorganized string or empty string",
+    "constraints": "1 ≤ length ≤ 500",
+    "explanation": "Use max heap by frequency. Alternately place most and second most frequent.",
+    "starterCode": "import heapq\nfrom collections import Counter\ns = input()\nfreq = Counter(s)\n# Max heap approach\n",
+    "testCases": [
+      { "input": "aab", "output": "aba" },
+      { "input": "aaab", "output": "" },
+      { "input": "aabb", "output": "abab" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-026",
-    "title": "Binary Search on Answer Variant 26",
-    "description": "Solve the problem of binary search on answer under the given constraints.",
-    "language": "C",
+    "title": "Peak Element (Binary Search)",
+    "description": "A peak element is one that is greater than its neighbours. Find any peak element index.\nMust be O(log n).",
+    "language": "Python",
     "category": "Binary Search",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Index of any peak element",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Binary search: if mid > mid+1, peak is on left side, else right.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\nlo, hi = 0, n - 1\n# Binary search for peak\n",
+    "testCases": [
+      { "input": "5\n1 2 3 1 5", "output": "2" },
+      { "input": "3\n1 2 1", "output": "1" },
+      { "input": "1\n1", "output": "0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-027",
-    "title": "Merge Overlapping Intervals Variant 27",
-    "description": "Solve the problem of merge overlapping intervals under the given constraints.",
-    "language": "C",
+    "title": "Non-Overlapping Intervals",
+    "description": "Given intervals, find the minimum number of intervals to remove to make all remaining intervals non-overlapping.",
+    "language": "Python",
     "category": "Greedy",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nNext n lines: start end",
+    "outputFormat": "Minimum removals",
+    "constraints": "1 ≤ n ≤ 10^4",
+    "explanation": "Sort by end time. Greedily keep intervals with earliest end.",
+    "starterCode": "n = int(input())\nintervals = [list(map(int, input().split())) for _ in range(n)]\nintervals.sort(key=lambda x: x[1])\n# Greedy selection\n",
+    "testCases": [
+      { "input": "4\n1 2\n2 3\n3 4\n1 3", "output": "1" },
+      { "input": "3\n1 2\n1 2\n1 2", "output": "2" },
+      { "input": "2\n1 2\n2 3", "output": "0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-028",
-    "title": "Sliding Window Maximum Variant 28",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Fruits in Baskets (Sliding Window)",
+    "description": "You have two baskets and an array of fruits. Pick the longest subarray with at most 2 distinct fruit types.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers (fruit types)",
+    "outputFormat": "Maximum fruits collected",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Sliding window with a frequency map. Shrink when distinct types exceed 2.",
+    "starterCode": "from collections import defaultdict\nn = int(input())\nfruits = list(map(int, input().split()))\n# Sliding window\n",
+    "testCases": [
+      { "input": "5\n1 2 1 2 3", "output": "4" },
+      { "input": "6\n0 1 2 2 2 2", "output": "5" },
+      { "input": "4\n1 1 1 1", "output": "4" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-029",
-    "title": "Balanced Parentheses Checker Variant 29",
-    "description": "Solve the problem of balanced parentheses checker under the given constraints.",
-    "language": "C",
+    "title": "Remove Invalid Parentheses",
+    "description": "Given a string with parentheses and letters, remove the minimum number of invalid parentheses to make it valid. Print all possible results.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "A string",
+    "outputFormat": "All valid results, one per line (sorted)",
+    "constraints": "1 ≤ length ≤ 20",
+    "explanation": "BFS: remove one bracket at a time, check validity, stop at first valid level.",
+    "starterCode": "from collections import deque\ns = input()\n# BFS solution\n",
+    "testCases": [
+      { "input": "()())()", "output": "(())()\n()()()" },
+      { "input": "(a)())()", "output": "(a())()\n(a)()()" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-030",
-    "title": "Top K Frequent Words Variant 30",
-    "description": "Solve the problem of top k frequent words under the given constraints.",
-    "language": "C",
+    "title": "Group Anagrams",
+    "description": "Given a list of strings, group the anagrams together.\nEach group on one line, words space-separated, groups sorted alphabetically.",
+    "language": "Python",
     "category": "Hashing",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n words",
+    "outputFormat": "Groups of anagrams, each group on one line sorted",
+    "constraints": "1 ≤ n ≤ 10^4",
+    "explanation": "Sort each word as key in a dict. Group words by their sorted key.",
+    "starterCode": "from collections import defaultdict\nn = int(input())\nwords = input().split()\ngroups = defaultdict(list)\n# Group by sorted characters\n",
+    "testCases": [
+      { "input": "6\neat tea tan ate nat bat", "output": "ate eat tea\nnat tan\nbat" },
+      { "input": "1\na", "output": "a" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-031",
-    "title": "Merge Overlapping Intervals Variant 31",
-    "description": "Solve the problem of merge overlapping intervals under the given constraints.",
-    "language": "C",
+    "title": "Jump Game (Greedy)",
+    "description": "Given an array where arr[i] is max jump from index i, determine if you can reach the last index from index 0.",
+    "language": "Python",
     "category": "Greedy",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "True or False",
+    "constraints": "1 ≤ n ≤ 10^4",
+    "explanation": "Track max reachable index. If current index exceeds it, return False.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\nmax_reach = 0\n# Greedy approach\n",
+    "testCases": [
+      { "input": "5\n2 3 1 1 4", "output": "True" },
+      { "input": "5\n3 2 1 0 4", "output": "False" },
+      { "input": "1\n0", "output": "True" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-032",
-    "title": "Merge Overlapping Intervals Variant 32",
-    "description": "Solve the problem of merge overlapping intervals under the given constraints.",
-    "language": "C",
+    "title": "Minimum Platforms (Greedy)",
+    "description": "Given arrival and departure times of trains, find the minimum number of platforms needed.",
+    "language": "Python",
     "category": "Greedy",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: arrival times\nThird line: departure times",
+    "outputFormat": "Minimum platforms needed",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Sort both arrays. Use two pointers to count simultaneous trains.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\ndep = list(map(int, input().split()))\narr.sort()\ndep.sort()\n# Two pointer approach\n",
+    "testCases": [
+      { "input": "6\n900 940 950 1100 1500 1800\n910 1200 1120 1130 1900 2000", "output": "3" },
+      { "input": "3\n900 1100 1235\n1000 1200 1240", "output": "1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-033",
-    "title": "Expression Evaluation Variant 33",
-    "description": "Solve the problem of expression evaluation under the given constraints.",
-    "language": "C",
+    "title": "Stock Span Problem",
+    "description": "Given daily stock prices, calculate the span of each day's price.\nSpan is number of consecutive days before today where price was <= today's price.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n prices",
+    "outputFormat": "Space-separated spans",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Use a stack of indices. Pop while stack top price <= current price.",
+    "starterCode": "n = int(input())\nprices = list(map(int, input().split()))\nstack = []\nspan = []\n# Stack approach\n",
+    "testCases": [
+      { "input": "7\n100 80 60 70 60 75 85", "output": "1 1 1 2 1 4 6" },
+      { "input": "5\n10 4 5 90 120", "output": "1 1 2 4 5" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-034",
-    "title": "Binary Search on Answer Variant 34",
-    "description": "Solve the problem of binary search on answer under the given constraints.",
-    "language": "C",
+    "title": "Aggressive Cows (Binary Search on Answer)",
+    "description": "Given N stalls and C cows, place cows to maximise the minimum distance between any two cows.",
+    "language": "Python",
     "category": "Binary Search",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n c\nSecond line: n stall positions",
+    "outputFormat": "Maximum possible minimum distance",
+    "constraints": "2 ≤ c ≤ n ≤ 10^5",
+    "explanation": "Sort stalls. Binary search on answer. Check if min distance is achievable.",
+    "starterCode": "n, c = map(int, input().split())\nstalls = list(map(int, input().split()))\nstalls.sort()\n# Binary search on minimum distance\n",
+    "testCases": [
+      { "input": "5 3\n1 2 4 8 9", "output": "3" },
+      { "input": "6 4\n0 3 4 7 10 9", "output": "3" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-035",
-    "title": "Binary Search on Answer Variant 35",
-    "description": "Solve the problem of binary search on answer under the given constraints.",
-    "language": "C",
+    "title": "Koko Eating Bananas",
+    "description": "Koko can eat K bananas/hour. Piles have different sizes. Find minimum K such that she finishes in H hours.",
+    "language": "Python",
     "category": "Binary Search",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n h\nSecond line: n pile sizes",
+    "outputFormat": "Minimum eating speed K",
+    "constraints": "1 ≤ n ≤ 10^4, 1 ≤ h ≤ 10^9",
+    "explanation": "Binary search on K from 1 to max(piles). Check total hours needed.",
+    "starterCode": "import math\nn, h = map(int, input().split())\npiles = list(map(int, input().split()))\n# Binary search on speed\n",
+    "testCases": [
+      { "input": "4 8\n3 6 7 11", "output": "4" },
+      { "input": "5 5\n30 11 23 4 20", "output": "30" },
+      { "input": "4 4\n3 6 7 11", "output": "11" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-036",
-    "title": "Top K Frequent Words Variant 36",
-    "description": "Solve the problem of top k frequent words under the given constraints.",
-    "language": "C",
+    "title": "Two Sum (Hashing)",
+    "description": "Given an array and a target, return indices of two numbers that add up to target.\nEach input has exactly one solution. Cannot use same element twice.",
+    "language": "Python",
     "category": "Hashing",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers\nThird line: target",
+    "outputFormat": "Two indices separated by space (smaller first)",
+    "constraints": "2 ≤ n ≤ 10^4",
+    "explanation": "Use hash map: for each element check if complement exists.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\ntarget = int(input())\nseen = {}\n# Hash map approach\n",
+    "testCases": [
+      { "input": "4\n2 7 11 15\n9", "output": "0 1" },
+      { "input": "3\n3 2 4\n6", "output": "1 2" },
+      { "input": "2\n3 3\n6", "output": "0 1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-037",
-    "title": "Task Scheduler with Cooldown Variant 37",
-    "description": "Solve the problem of task scheduler with cooldown under the given constraints.",
-    "language": "C",
+    "title": "Find Median from Data Stream",
+    "description": "Implement a data structure that supports adding numbers and finding median at any point.\nFor even count, median is average of two middle numbers (print as float).",
+    "language": "Python",
     "category": "Heap",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: Q operations\nNext Q lines: ADD num OR MEDIAN",
+    "outputFormat": "For each MEDIAN query, print the median",
+    "constraints": "1 ≤ Q ≤ 10^4",
+    "explanation": "Use two heaps: max-heap for lower half, min-heap for upper half.",
+    "starterCode": "import heapq\nq = int(input())\nlower = []  # max heap (negate values)\nupper = []  # min heap\n# Process operations\n",
+    "testCases": [
+      { "input": "5\nADD 1\nADD 2\nMEDIAN\nADD 3\nMEDIAN", "output": "1.5\n2.0" },
+      { "input": "3\nADD 5\nMEDIAN\nADD 3", "output": "5.0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-038",
-    "title": "Top K Frequent Words Variant 38",
-    "description": "Solve the problem of top k frequent words under the given constraints.",
-    "language": "C",
+    "title": "Subarray Sum Equals K",
+    "description": "Given an array and integer K, count the total number of continuous subarrays whose sum equals K.",
+    "language": "Python",
     "category": "Hashing",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers\nThird line: k",
+    "outputFormat": "Count of subarrays",
+    "constraints": "1 ≤ n ≤ 2×10^4",
+    "explanation": "Use prefix sum with hash map. Count pairs where prefix[j] - prefix[i] = k.",
+    "starterCode": "from collections import defaultdict\nn = int(input())\narr = list(map(int, input().split()))\nk = int(input())\ncount = 0\nprefix = defaultdict(int)\nprefix[0] = 1\n# Prefix sum approach\n",
+    "testCases": [
+      { "input": "5\n1 1 1 1 1\n2", "output": "4" },
+      { "input": "4\n1 2 3 4\n3", "output": "2" },
+      { "input": "3\n1 -1 1\n0", "output": "3" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-039",
-    "title": "Top K Frequent Words Variant 39",
-    "description": "Solve the problem of top k frequent words under the given constraints.",
-    "language": "C",
+    "title": "Longest Consecutive Sequence",
+    "description": "Given an unsorted array, find the length of the longest consecutive sequence.\nMust be O(n).",
+    "language": "Python",
     "category": "Hashing",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Length of longest consecutive sequence",
+    "constraints": "0 ≤ n ≤ 10^5",
+    "explanation": "Use a set. For each start of sequence (num-1 not in set), count streak.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\nnum_set = set(arr)\nbest = 0\n# Hash set approach\n",
+    "testCases": [
+      { "input": "6\n100 4 200 1 3 2", "output": "4" },
+      { "input": "5\n0 3 7 2 5", "output": "1" },
+      { "input": "4\n1 2 3 4", "output": "4" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-040",
-    "title": "LRU Cache Simulation Variant 40",
-    "description": "Solve the problem of lru cache simulation under the given constraints.",
-    "language": "C",
+    "title": "LRU Cache with TTL",
+    "description": "Implement an LRU Cache where each entry expires after T seconds.\nOn GET, return -1 if expired. On PUT, add with current timestamp.",
+    "language": "Python",
     "category": "Design",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: capacity ttl\nSecond line: Q\nNext Q lines: timestamp GET key OR timestamp PUT key value",
+    "outputFormat": "For each GET, output value or -1",
+    "constraints": "1 ≤ capacity ≤ 100",
+    "explanation": "Extend LRU with timestamp checking. On GET, validate timestamp + ttl > current time.",
+    "starterCode": "from collections import OrderedDict\ncap, ttl = map(int, input().split())\nq = int(input())\ncache = OrderedDict()  # key -> (value, timestamp)\n# Write TTL LRU logic\n",
+    "testCases": [
+      { "input": "2 3\n4\n0 PUT 1 100\n1 GET 1\n4 GET 1\n5 PUT 2 200", "output": "100\n-1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-041",
-    "title": "Task Scheduler with Cooldown Variant 41",
-    "description": "Solve the problem of task scheduler with cooldown under the given constraints.",
-    "language": "C",
+    "title": "Minimum Cost to Connect Ropes",
+    "description": "Given N ropes of different lengths, connect all ropes with minimum cost.\nCost of connecting two ropes = sum of their lengths.",
+    "language": "Python",
     "category": "Heap",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n rope lengths",
+    "outputFormat": "Minimum total cost",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Use min heap. Always combine two smallest ropes.",
+    "starterCode": "import heapq\nn = int(input())\nropes = list(map(int, input().split()))\nheapq.heapify(ropes)\ncost = 0\n# Greedy heap approach\n",
+    "testCases": [
+      { "input": "4\n4 3 2 6", "output": "29" },
+      { "input": "3\n1 2 3", "output": "9" },
+      { "input": "1\n5", "output": "0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-042",
-    "title": "Merge Overlapping Intervals Variant 42",
-    "description": "Solve the problem of merge overlapping intervals under the given constraints.",
-    "language": "C",
+    "title": "Gas Station (Circular Greedy)",
+    "description": "N gas stations in a circle. gas[i] is fuel available. cost[i] is cost to travel to next station.\nFind starting station index to complete the full circle, or -1 if impossible.",
+    "language": "Python",
     "category": "Greedy",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: gas amounts\nThird line: costs",
+    "outputFormat": "Starting station index or -1",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "If total gas >= total cost, a solution exists. Track tank; when negative, reset start.",
+    "starterCode": "n = int(input())\ngas = list(map(int, input().split()))\ncost = list(map(int, input().split()))\n# Greedy single pass\n",
+    "testCases": [
+      { "input": "5\n1 2 3 4 5\n3 4 5 1 2", "output": "3" },
+      { "input": "3\n2 3 4\n3 4 3", "output": "-1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-043",
-    "title": "Task Scheduler with Cooldown Variant 43",
-    "description": "Solve the problem of task scheduler with cooldown under the given constraints.",
-    "language": "C",
+    "title": "Trapping Rain Water",
+    "description": "Given an elevation map, compute how much water it can trap after raining.",
+    "language": "Python",
     "category": "Heap",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n heights",
+    "outputFormat": "Total water trapped",
+    "constraints": "1 ≤ n ≤ 3×10^4",
+    "explanation": "Two pointer approach: min(left_max, right_max) - height[i] for each index.",
+    "starterCode": "n = int(input())\nheight = list(map(int, input().split()))\nleft, right = 0, n - 1\nleft_max = right_max = water = 0\n# Two pointer approach\n",
+    "testCases": [
+      { "input": "12\n0 1 0 2 1 0 1 3 2 1 2 1", "output": "6" },
+      { "input": "6\n4 2 0 3 2 5", "output": "9" },
+      { "input": "3\n1 0 1", "output": "1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-044",
-    "title": "Expression Evaluation Variant 44",
-    "description": "Solve the problem of expression evaluation under the given constraints.",
-    "language": "C",
+    "title": "Daily Temperatures",
+    "description": "Given daily temperatures, return how many days until a warmer temperature for each day.\nIf no warmer day exists, output 0.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n temperatures",
+    "outputFormat": "Space-separated wait days",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Monotonic decreasing stack. Store indices. Pop when current temp > stack top.",
+    "starterCode": "n = int(input())\ntemps = list(map(int, input().split()))\nstack = []\nresult = [0] * n\n# Monotonic stack\n",
+    "testCases": [
+      { "input": "8\n73 74 75 71 69 72 76 73", "output": "1 1 4 2 1 1 0 0" },
+      { "input": "4\n30 40 50 60", "output": "1 1 1 0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-045",
-    "title": "Expression Evaluation Variant 45",
-    "description": "Solve the problem of expression evaluation under the given constraints.",
-    "language": "C",
+    "title": "Decode String",
+    "description": "Decode an encoded string. Format: k[string] means repeat string k times.\nExample: 3[a2[b]] = abbabbabb",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Encoded string",
+    "outputFormat": "Decoded string",
+    "constraints": "1 ≤ length ≤ 30",
+    "explanation": "Use stack. On '[' push current string and count. On ']' pop and repeat.",
+    "starterCode": "s = input()\nstack = []\ncurrent = ''\nnum = 0\n# Stack decode logic\n",
+    "testCases": [
+      { "input": "3[a]2[bc]", "output": "aaabcbc" },
+      { "input": "3[a2[c]]", "output": "accaccacc" },
+      { "input": "2[abc]3[cd]ef", "output": "abcabccdcdcdef" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-046",
-    "title": "LRU Cache Simulation Variant 46",
-    "description": "Solve the problem of lru cache simulation under the given constraints.",
-    "language": "C",
+    "title": "Clone a Graph",
+    "description": "Given a graph as adjacency list, clone it. Print each node's value and its neighbours in order.",
+    "language": "Python",
     "category": "Design",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n (nodes)\nNext n lines: space-separated neighbours of node i+1",
+    "outputFormat": "For each node: node: neighbours",
+    "constraints": "1 ≤ n ≤ 100",
+    "explanation": "BFS/DFS with visited map. Create new node for each unvisited.",
+    "starterCode": "from collections import deque\nn = int(input())\nadj = {}\nfor i in range(1, n+1):\n    line = input().split()\n    adj[i] = list(map(int, line)) if line[0] != '' else []\n# Clone using BFS\n",
+    "testCases": [
+      { "input": "3\n2 3\n1 3\n1 2", "output": "1: 2 3\n2: 1 3\n3: 1 2" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-047",
-    "title": "LRU Cache Simulation Variant 47",
-    "description": "Solve the problem of lru cache simulation under the given constraints.",
-    "language": "C",
+    "title": "Max Frequency Stack",
+    "description": "Design a stack that push/pops the most frequent element. On tie, pop the most recently pushed.",
+    "language": "Python",
     "category": "Design",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: Q\nNext Q lines: PUSH val OR POP",
+    "outputFormat": "For each POP, print the popped value",
+    "constraints": "1 ≤ Q ≤ 2000",
+    "explanation": "Track frequency of each element and max frequency. Use freq->stack map.",
+    "starterCode": "from collections import defaultdict\nq = int(input())\nfreq = defaultdict(int)\ngroup = defaultdict(list)\nmax_freq = 0\n# FreqStack logic\n",
+    "testCases": [
+      { "input": "8\nPUSH 5\nPUSH 7\nPUSH 5\nPUSH 7\nPUSH 4\nPUSH 5\nPOP\nPOP", "output": "5\n7" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-048",
-    "title": "Balanced Parentheses Checker Variant 48",
-    "description": "Solve the problem of balanced parentheses checker under the given constraints.",
-    "language": "C",
+    "title": "Minimum Stack",
+    "description": "Design a stack that supports push, pop, and getMin in O(1) time.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: Q\nNext Q lines: PUSH val, POP, or GETMIN",
+    "outputFormat": "For each GETMIN or POP, print the value",
+    "constraints": "1 ≤ Q ≤ 10^4",
+    "explanation": "Maintain a parallel min stack that tracks minimum at each level.",
+    "starterCode": "q = int(input())\nstack = []\nmin_stack = []\n# Handle PUSH, POP, GETMIN\n",
+    "testCases": [
+      { "input": "6\nPUSH 3\nPUSH 1\nGETMIN\nPOP\nGETMIN\nPOP", "output": "1\n3" },
+      { "input": "3\nPUSH 5\nPUSH 2\nGETMIN", "output": "2" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-049",
-    "title": "Sliding Window Maximum Variant 49",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Longest Subarray with At Most K Distinct",
+    "description": "Find the length of the longest subarray with at most K distinct integers.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n k\nSecond line: n integers",
+    "outputFormat": "Maximum length",
+    "constraints": "1 ≤ k ≤ n ≤ 10^5",
+    "explanation": "Sliding window with frequency map. Shrink left when distinct count > k.",
+    "starterCode": "from collections import defaultdict\nn, k = map(int, input().split())\narr = list(map(int, input().split()))\nwindow = defaultdict(int)\n# Sliding window\n",
+    "testCases": [
+      { "input": "7 2\n1 2 1 2 3 3 2", "output": "4" },
+      { "input": "5 3\n1 2 3 4 5", "output": "3" },
+      { "input": "4 1\n1 1 1 1", "output": "4" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-050",
-    "title": "Merge Overlapping Intervals Variant 50",
-    "description": "Solve the problem of merge overlapping intervals under the given constraints.",
-    "language": "C",
+    "title": "Activity Selection (Greedy)",
+    "description": "Given start and end times of activities, select the maximum number of non-overlapping activities.",
+    "language": "Python",
     "category": "Greedy",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nNext n lines: start end",
+    "outputFormat": "Maximum activities selected",
+    "constraints": "1 ≤ n ≤ 10^5",
+    "explanation": "Sort by end time. Greedily pick activities that start after last selected ends.",
+    "starterCode": "n = int(input())\nactivities = [list(map(int, input().split())) for _ in range(n)]\nactivities.sort(key=lambda x: x[1])\n# Greedy selection\n",
+    "testCases": [
+      { "input": "6\n1 2\n3 4\n0 6\n5 7\n8 9\n5 9", "output": "4" },
+      { "input": "3\n1 3\n2 4\n3 5", "output": "2" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-051",
-    "title": "Sliding Window Maximum Variant 51",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Maximum Circular Subarray Sum",
+    "description": "Find the maximum sum of a circular subarray.\nThe subarray can wrap around from end to beginning.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Maximum circular subarray sum",
+    "constraints": "1 ≤ n ≤ 3×10^4",
+    "explanation": "max(normal_max, total_sum - min_subarray_sum). Handle all-negative case.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\n# Kadane's for max and min subarrays\n",
+    "testCases": [
+      { "input": "5\n1 -2 3 -2 5", "output": "7" },
+      { "input": "4\n5 -3 5 5", "output": "12" },
+      { "input": "3\n-1 -2 -3", "output": "-1" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-052",
-    "title": "Sliding Window Maximum Variant 52",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Largest Rectangle in Histogram (Hard)",
+    "description": "Same as the histogram problem but with online queries.\nFor each query, get histogram data and return largest rectangle area.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: q (queries)\nFor each query: n on first line, then n heights",
+    "outputFormat": "Largest area for each query",
+    "constraints": "1 ≤ q ≤ 10, 1 ≤ n ≤ 10^4",
+    "explanation": "For each query apply stack-based histogram solution.",
+    "starterCode": "def max_area(heights):\n    stack = []\n    max_a = 0\n    # Stack solution here\n    return max_a\n\nq = int(input())\nfor _ in range(q):\n    n = int(input())\n    h = list(map(int, input().split()))\n    print(max_area(h))\n",
+    "testCases": [
+      { "input": "2\n6\n2 1 5 6 2 3\n3\n1 1 1", "output": "10\n3" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-053",
-    "title": "Detect Cycle in Linked List Variant 53",
-    "description": "Solve the problem of detect cycle in linked list under the given constraints.",
-    "language": "C",
+    "title": "Merge K Sorted Lists",
+    "description": "Given K sorted arrays, merge them into one sorted array.",
+    "language": "Python",
     "category": "Linked List",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: k\nNext k lines: sorted integers (space-separated)",
+    "outputFormat": "Single sorted array space-separated",
+    "constraints": "1 ≤ k ≤ 1000",
+    "explanation": "Use min-heap of (value, list_index, element_index). Pop smallest, push next from same list.",
+    "starterCode": "import heapq\nk = int(input())\nlists = [list(map(int, input().split())) for _ in range(k)]\nheap = []\nresult = []\n# Min heap merge\n",
+    "testCases": [
+      { "input": "3\n1 4 5\n1 3 4\n2 6", "output": "1 1 2 3 4 4 5 6" },
+      { "input": "2\n1 2\n3 4", "output": "1 2 3 4" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-054",
-    "title": "Expression Evaluation Variant 54",
-    "description": "Solve the problem of expression evaluation under the given constraints.",
-    "language": "C",
+    "title": "Largest Number Formation",
+    "description": "Given a list of non-negative integers, arrange them to form the largest number.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Largest number as string",
+    "constraints": "1 ≤ n ≤ 100",
+    "explanation": "Custom comparator: compare xy vs yx as strings. Sort descending.",
+    "starterCode": "from functools import cmp_to_key\nn = int(input())\nnums = list(map(str, input().split()))\n# Custom sort\n",
+    "testCases": [
+      { "input": "3\n10 2 9", "output": "9210" },
+      { "input": "4\n3 30 34 5", "output": "5343030" },
+      { "input": "2\n0 0", "output": "0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-055",
-    "title": "Top K Frequent Words Variant 55",
-    "description": "Solve the problem of top k frequent words under the given constraints.",
-    "language": "C",
+    "title": "Distinct Characters Window",
+    "description": "Find the length of the longest substring without repeating characters.",
+    "language": "Python",
     "category": "Hashing",
     "difficulty": "Hard",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "A string",
+    "outputFormat": "Length of longest unique substring",
+    "constraints": "0 ≤ length ≤ 5×10^4",
+    "explanation": "Sliding window with set or dict tracking last seen position.",
+    "starterCode": "s = input()\nleft = 0\nbest = 0\nseen = {}\n# Sliding window\n",
+    "testCases": [
+      { "input": "abcabcbb", "output": "3" },
+      { "input": "bbbbb", "output": "1" },
+      { "input": "pwwkew", "output": "3" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-056",
-    "title": "Shortest Path in Grid Variant 56",
-    "description": "Solve the problem of shortest path in grid under the given constraints.",
-    "language": "C",
+    "title": "Number of Islands (BFS)",
+    "description": "Given a 2D grid of '1' (land) and '0' (water), count the number of islands.",
+    "language": "Python",
     "category": "Graph",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n m\nNext n lines: m space-separated values (0 or 1)",
+    "outputFormat": "Number of islands",
+    "constraints": "1 ≤ n,m ≤ 300",
+    "explanation": "BFS/DFS from each unvisited '1'. Mark visited. Count starts.",
+    "starterCode": "from collections import deque\nn, m = map(int, input().split())\ngrid = [input().split() for _ in range(n)]\nvisited = [[False]*m for _ in range(n)]\ncount = 0\n# BFS island counting\n",
+    "testCases": [
+      { "input": "4 5\n1 1 0 0 0\n1 1 0 0 0\n0 0 1 0 0\n0 0 0 1 1", "output": "3" },
+      { "input": "2 2\n0 0\n0 0", "output": "0" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-057",
-    "title": "Detect Cycle in Linked List Variant 57",
-    "description": "Solve the problem of detect cycle in linked list under the given constraints.",
-    "language": "C",
+    "title": "Reorder List",
+    "description": "Given a linked list L0→L1→…→Ln, reorder to L0→Ln→L1→Ln-1→…\nPrint the reordered list.",
+    "language": "Python",
     "category": "Linked List",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n values",
+    "outputFormat": "Space-separated reordered values",
+    "constraints": "1 ≤ n ≤ 5×10^4",
+    "explanation": "Use deque. Alternately pop from front and back.",
+    "starterCode": "from collections import deque\nn = int(input())\nvals = list(map(int, input().split()))\ndq = deque(vals)\nresult = []\n# Alternate front and back\n",
+    "testCases": [
+      { "input": "4\n1 2 3 4", "output": "1 4 2 3" },
+      { "input": "5\n1 2 3 4 5", "output": "1 5 2 4 3" },
+      { "input": "2\n1 2", "output": "1 2" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-058",
-    "title": "Sliding Window Maximum Variant 58",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Subarrays with Product Less Than K",
+    "description": "Count contiguous subarrays where product of all elements is less than K.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n k\nSecond line: n positive integers",
+    "outputFormat": "Count of subarrays",
+    "constraints": "1 ≤ n ≤ 3×10^4, 0 < k ≤ 10^6",
+    "explanation": "Sliding window. Shrink left when product >= k. Each right adds (right-left+1) subarrays.",
+    "starterCode": "n, k = map(int, input().split())\narr = list(map(int, input().split()))\nproduct = 1\nleft = 0\ncount = 0\n# Sliding window\n",
+    "testCases": [
+      { "input": "5 100\n10 5 2 6 4", "output": "8" },
+      { "input": "3 10\n1 2 3", "output": "6" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-059",
-    "title": "Sliding Window Maximum Variant 59",
-    "description": "Solve the problem of sliding window maximum under the given constraints.",
-    "language": "C",
+    "title": "Design Twitter Feed",
+    "description": "Implement Twitter: postTweet(userId, tweetId), getNewsFeed(userId), follow(u, v), unfollow(u, v).\ngetNewsFeed returns 10 most recent tweets from user and followees.",
+    "language": "Python",
     "category": "Deque",
     "difficulty": "Medium",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: Q\nNext Q lines: POST uid tid, FEED uid, FOLLOW u v, UNFOLLOW u v",
+    "outputFormat": "For each FEED, print up to 10 tweet ids space-separated",
+    "constraints": "1 ≤ Q ≤ 500",
+    "explanation": "Track tweets with timestamps. On FEED, collect from user+followees, sort by time.",
+    "starterCode": "from collections import defaultdict\nimport heapq\nq = int(input())\ntweets = defaultdict(list)  # uid -> [(time, tid)]\nfollowing = defaultdict(set)  # uid -> set of followees\ntime = 0\n# Process operations\n",
+    "testCases": [
+      { "input": "5\nPOST 1 5\nPOST 1 3\nFEED 1\nFOLLOW 1 2\nFEED 1", "output": "3 5\n3 5" }
+    ]
   },
   {
-    "topic":"DSA",
+    "topic": "DSA",
     "problemId": "DSA-060",
-    "title": "Balanced Parentheses Checker Variant 60",
-    "description": "Solve the problem of balanced parentheses checker under the given constraints.",
-    "language": "C",
+    "title": "Valid Bracket Sequences Count",
+    "description": "Count the number of valid bracket sequences of length 2N.\nOutput the Nth Catalan number modulo 10^9+7.",
+    "language": "Python",
     "category": "Stack",
     "difficulty": "Easy",
-    "inputFormat": "See problem statement",
-    "outputFormat": "See output description",
-    "constraints": "n ≤ 10^5",
-    "explanation": "Apply appropriate data structure or algorithm for optimal performance.",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "Single integer N",
+    "outputFormat": "Nth Catalan number mod 10^9+7",
+    "constraints": "1 ≤ N ≤ 1000",
+    "explanation": "Catalan(N) = C(2N,N)/(N+1). Use modular arithmetic.",
+    "starterCode": "MOD = 10**9 + 7\nn = int(input())\n# Calculate Catalan number mod MOD\n",
+    "testCases": [
+      { "input": "3", "output": "5" },
+      { "input": "4", "output": "14" },
+      { "input": "1", "output": "1" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-STR-101",
     "title": "Separate Spaces to Hyphen or #",
-    "description": "Replace each space in the string with '-' and if string is empty return '#'.",
+    "description": "Replace each space in the string with '-'. If the string is empty, return '#'.",
     "language": "Python",
     "category": "Python - String",
     "difficulty": "Easy",
-    "inputFormat": "A string",
+    "inputFormat": "A single string (may be empty)",
     "outputFormat": "Modified string",
     "constraints": "Length <= 10^5",
-    "explanation": "Use replace and condition check.",
-    "starterCode": "# Write code here\n"
+    "explanation": "Use str.replace() and check for empty string.",
+    "starterCode": "s = input()\n# Write your solution here\n",
+    "testCases": [
+      { "input": "hello world", "output": "hello-world" },
+      { "input": "", "output": "#" },
+      { "input": "a b c", "output": "a-b-c" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-STR-102",
     "title": "Reverse String",
     "description": "Reverse the given string.",
     "language": "Python",
     "category": "Python - String",
     "difficulty": "Easy",
-    "inputFormat": "String",
+    "inputFormat": "A single string",
     "outputFormat": "Reversed string",
     "constraints": "Length <= 10^5",
-    "explanation": "Use slicing.",
-    "starterCode": "# Write code here\n"
+    "explanation": "Use slicing: s[::-1]",
+    "starterCode": "s = input()\n# Write your solution here\n",
+    "testCases": [
+      { "input": "hello", "output": "olleh" },
+      { "input": "Python", "output": "nohtyP" },
+      { "input": "a", "output": "a" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-STR-103",
     "title": "Remove Duplicate Characters",
-    "description": "Remove duplicate characters while preserving order.",
+    "description": "Remove duplicate characters from a string while preserving the original order.",
     "language": "Python",
     "category": "Python - String",
     "difficulty": "Medium",
-    "inputFormat": "String",
-    "outputFormat": "Unique string",
+    "inputFormat": "A single string",
+    "outputFormat": "String with duplicates removed",
     "constraints": "Length <= 10^5",
-    "explanation": "Track visited characters.",
-    "starterCode": "# Write code here\n"
+    "explanation": "Use an ordered set — track seen characters and build result.",
+    "starterCode": "s = input()\nseen = set()\nresult = []\n# Write your solution here\n",
+    "testCases": [
+      { "input": "programming", "output": "progamin" },
+      { "input": "aabbcc", "output": "abc" },
+      { "input": "abcabc", "output": "abc" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-STR-104",
     "title": "Count Occurrence of Character",
-    "description": "Count how many times a character appears in string.",
+    "description": "Given a string and a character, count how many times the character appears.",
     "language": "Python",
     "category": "Python - String",
     "difficulty": "Easy",
-    "inputFormat": "String and character",
-    "outputFormat": "Integer",
+    "inputFormat": "First line: the string\nSecond line: the character",
+    "outputFormat": "Integer count",
     "constraints": "Length <= 10^5",
-    "explanation": "Use count().",
-    "starterCode": "# Write code here\n"
+    "explanation": "Use str.count(char)",
+    "starterCode": "s = input()\nc = input()\n# Write your solution here\n",
+    "testCases": [
+      { "input": "hello\nl", "output": "2" },
+      { "input": "python\np", "output": "1" },
+      { "input": "aaa\na", "output": "3" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-STR-105",
     "title": "Access Third Element",
-    "description": "Print the third character of string.",
+    "description": "Print the third character of the given string. If string is shorter than 3, print 'NA'.",
     "language": "Python",
     "category": "Python - String",
     "difficulty": "Easy",
-    "inputFormat": "String",
-    "outputFormat": "Character",
+    "inputFormat": "A single string",
+    "outputFormat": "Third character or NA",
     "constraints": "Length <= 10^5",
-    "explanation": "Index starts from 0.",
-    "starterCode": "# Write code here\n"
+    "explanation": "Index 2 is the third character. Check length first.",
+    "starterCode": "s = input()\n# Write your solution here\n",
+    "testCases": [
+      { "input": "hello", "output": "l" },
+      { "input": "ab", "output": "NA" },
+      { "input": "Python", "output": "t" }
+    ]
   },
-
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-LIST-201",
     "title": "Only Positive Elements",
-    "description": "Print only positive elements from list.",
+    "description": "Given a list of integers, print only the positive elements on one line separated by spaces.",
     "language": "Python",
     "category": "Python - List",
     "difficulty": "Easy",
-    "inputFormat": "List",
-    "outputFormat": "Positive elements",
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Positive elements space-separated",
     "constraints": "n <= 10^5",
-    "explanation": "Filter > 0",
-    "starterCode": "# Write code here\n"
+    "explanation": "Filter elements > 0 and print.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\n# Write your solution here\n",
+    "testCases": [
+      { "input": "5\n1 -2 3 -4 5", "output": "1 3 5" },
+      { "input": "3\n-1 -2 -3", "output": "" },
+      { "input": "4\n0 1 2 3", "output": "1 2 3" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-LIST-202",
     "title": "Sum of Elements",
-    "description": "Add all elements of list.",
+    "description": "Given a list of numbers, return their sum.",
     "language": "Python",
     "category": "Python - List",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n numbers",
+    "outputFormat": "Sum",
+    "constraints": "n <= 10^5",
+    "explanation": "Use sum() built-in.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\n# Write your solution here\n",
+    "testCases": [
+      { "input": "5\n1 2 3 4 5", "output": "15" },
+      { "input": "3\n10 20 30", "output": "60" },
+      { "input": "1\n0", "output": "0" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-LIST-203",
     "title": "Find Data Type of Each Element",
-    "description": "Print datatype of each element.",
+    "description": "Given a mixed list (integers and floats as strings), print the data type of each element.",
     "language": "Python",
     "category": "Python - List",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nNext n lines: one element per line",
+    "outputFormat": "One type per line: int or float",
+    "constraints": "n <= 100",
+    "explanation": "Try converting to int, then float. Print accordingly.",
+    "starterCode": "n = int(input())\nfor _ in range(n):\n    val = input()\n    # Determine type and print\n",
+    "testCases": [
+      { "input": "3\n1\n2.5\n3", "output": "int\nfloat\nint" },
+      { "input": "2\n0\n1.0", "output": "int\nfloat" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-LIST-204",
     "title": "Second Largest Element",
-    "description": "Find second largest element.",
+    "description": "Find the second largest distinct element in the list. If it doesn't exist, print -1.",
     "language": "Python",
     "category": "Python - List",
     "difficulty": "Medium",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Second largest element",
+    "constraints": "n <= 10^5",
+    "explanation": "Sort unique elements, take second from last.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\n# Write your solution here\n",
+    "testCases": [
+      { "input": "5\n3 1 4 1 5", "output": "4" },
+      { "input": "3\n1 1 1", "output": "-1" },
+      { "input": "2\n2 1", "output": "1" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-LIST-205",
     "title": "Insert or Delete Operation",
-    "description": "Perform M operations (1=delete,2=insert).",
+    "description": "Given a list and M operations: 1 i x = insert x at index i, 2 i = delete element at index i.\nPrint final list.",
     "language": "Python",
     "category": "Python - List",
     "difficulty": "Medium",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers\nThird line: m\nNext m lines: operation",
+    "outputFormat": "Final list space-separated",
+    "constraints": "n, m <= 10^4",
+    "explanation": "Use list.insert() and list.pop() with index.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\nm = int(input())\nfor _ in range(m):\n    op = list(map(int, input().split()))\n    # Process operation\nprint(*arr)\n",
+    "testCases": [
+      { "input": "3\n1 2 3\n2\n1 1 10\n2 3", "output": "1 10 2" },
+      { "input": "2\n5 6\n1\n2 0", "output": "6" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-LIST-206",
     "title": "Remove Duplicate Values",
-    "description": "Remove duplicates from list.",
+    "description": "Remove duplicate values from a list while preserving the original order.",
     "language": "Python",
     "category": "Python - List",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "List without duplicates space-separated",
+    "constraints": "n <= 10^5",
+    "explanation": "Use a set to track seen elements while building result list.",
+    "starterCode": "n = int(input())\narr = list(map(int, input().split()))\n# Write your solution here\n",
+    "testCases": [
+      { "input": "6\n1 2 2 3 3 4", "output": "1 2 3 4" },
+      { "input": "3\n1 1 1", "output": "1" },
+      { "input": "4\n4 3 2 1", "output": "4 3 2 1" }
+    ]
   },
-
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-FUNC-301",
     "title": "Factorial Function",
-    "description": "Return factorial of number.",
+    "description": "Write a function to return the factorial of a given number N.",
     "language": "Python",
     "category": "Python - Function",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "Single integer N",
+    "outputFormat": "N factorial",
+    "constraints": "0 <= N <= 15",
+    "explanation": "Recursive or iterative factorial. 0! = 1.",
+    "starterCode": "def factorial(n):\n    # Write here\n    pass\n\nn = int(input())\nprint(factorial(n))\n",
+    "testCases": [
+      { "input": "5", "output": "120" },
+      { "input": "0", "output": "1" },
+      { "input": "10", "output": "3628800" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-FUNC-302",
     "title": "Count Vowels",
-    "description": "Count vowels in string.",
+    "description": "Write a function that counts the number of vowels (a, e, i, o, u) in a string. Case insensitive.",
     "language": "Python",
     "category": "Python - Function",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "A single string",
+    "outputFormat": "Count of vowels",
+    "constraints": "Length <= 10^5",
+    "explanation": "Check each character against 'aeiou' in lowercase.",
+    "starterCode": "def count_vowels(s):\n    # Write here\n    pass\n\ns = input()\nprint(count_vowels(s))\n",
+    "testCases": [
+      { "input": "Hello World", "output": "3" },
+      { "input": "Python", "output": "1" },
+      { "input": "AEIOU", "output": "5" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-FUNC-303",
     "title": "Max of Three Numbers",
-    "description": "Return maximum of three numbers.",
+    "description": "Write a function that returns the maximum of three numbers.",
     "language": "Python",
     "category": "Python - Function",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "Three integers on one line",
+    "outputFormat": "Maximum value",
+    "constraints": "-10^9 <= values <= 10^9",
+    "explanation": "Use max() or if-else comparison.",
+    "starterCode": "def max_of_three(a, b, c):\n    # Write here\n    pass\n\na, b, c = map(int, input().split())\nprint(max_of_three(a, b, c))\n",
+    "testCases": [
+      { "input": "1 2 3", "output": "3" },
+      { "input": "-1 -5 -3", "output": "-1" },
+      { "input": "10 10 10", "output": "10" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-FUNC-304",
     "title": "Multiply Variable Arguments",
-    "description": "Multiply numbers using *args.",
+    "description": "Write a function using *args that multiplies all given numbers together.",
     "language": "Python",
     "category": "Python - Function",
     "difficulty": "Medium",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "N numbers on one line",
+    "outputFormat": "Product of all numbers",
+    "constraints": "1 <= N <= 20, values <= 100",
+    "explanation": "Use *args in function definition. Multiply all together.",
+    "starterCode": "def multiply(*args):\n    # Write here\n    pass\n\nnums = list(map(int, input().split()))\nprint(multiply(*nums))\n",
+    "testCases": [
+      { "input": "1 2 3 4", "output": "24" },
+      { "input": "5", "output": "5" },
+      { "input": "2 3", "output": "6" }
+    ]
   },
-
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-REG-401",
     "title": "Match Pattern at Beginning",
-    "description": "Use regex to match pattern at beginning.",
+    "description": "Given a string and a pattern, check if the pattern matches at the beginning of the string.\nPrint Yes or No.",
     "language": "Python",
     "category": "Python - Regex",
     "difficulty": "Medium",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: string\nSecond line: pattern",
+    "outputFormat": "Yes or No",
+    "constraints": "Length <= 1000",
+    "explanation": "Use re.match() which matches at the start.",
+    "starterCode": "import re\ns = input()\npattern = input()\n# Write your solution here\n",
+    "testCases": [
+      { "input": "Hello World\nHello", "output": "Yes" },
+      { "input": "Python is great\ngreat", "output": "No" },
+      { "input": "123abc\n\\d+", "output": "Yes" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-REG-402",
-    "title": "Extract Data from URL",
-    "description": "Extract domain from URL.",
+    "title": "Extract Domain from URL",
+    "description": "Given a URL, extract the domain name (without www. and without the extension).",
     "language": "Python",
     "category": "Python - Regex",
     "difficulty": "Medium",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "A URL string",
+    "outputFormat": "Domain name",
+    "constraints": "Length <= 200",
+    "explanation": "Use regex to capture the part between www. (optional) and the TLD.",
+    "starterCode": "import re\nurl = input()\n# Extract domain\n",
+    "testCases": [
+      { "input": "https://www.google.com", "output": "google" },
+      { "input": "http://github.com", "output": "github" },
+      { "input": "https://www.python.org", "output": "python" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-REG-403",
     "title": "Replace Multiple Whitespaces",
-    "description": "Replace multiple spaces with underscore.",
+    "description": "Replace multiple consecutive whitespace characters with a single underscore.",
     "language": "Python",
     "category": "Python - Regex",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "A string",
+    "outputFormat": "Modified string",
+    "constraints": "Length <= 10^5",
+    "explanation": "Use re.sub(r'\\s+', '_', string).",
+    "starterCode": "import re\ns = input()\n# Write your solution here\n",
+    "testCases": [
+      { "input": "hello   world", "output": "hello_world" },
+      { "input": "a  b  c", "output": "a_b_c" },
+      { "input": "no spaces", "output": "no_spaces" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-REG-404",
     "title": "Validate Email",
-    "description": "Validate email format using regex.",
+    "description": "Check if a given string is a valid email address. Print Valid or Invalid.",
     "language": "Python",
     "category": "Python - Regex",
     "difficulty": "Medium",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "An email string",
+    "outputFormat": "Valid or Invalid",
+    "constraints": "Length <= 200",
+    "explanation": "Pattern: one or more alphanumeric/dots/underscores, @, domain, dot, 2-4 letter TLD.",
+    "starterCode": "import re\nemail = input()\n# Validate email pattern\n",
+    "testCases": [
+      { "input": "test@example.com", "output": "Valid" },
+      { "input": "invalid-email", "output": "Invalid" },
+      { "input": "user.name@domain.org", "output": "Valid" }
+    ]
   },
-
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-DICT-501",
-    "title": "Access Value",
-    "description": "Access value using key.",
+    "title": "Access Value by Key",
+    "description": "Given a dictionary and a key, print the value. If key doesn't exist, print 'Key not found'.",
     "language": "Python",
     "category": "Python - Dictionary",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n (pairs)\nNext n lines: key value\nLast line: search key",
+    "outputFormat": "Value or 'Key not found'",
+    "constraints": "n <= 100",
+    "explanation": "Use dict.get() with a default value.",
+    "starterCode": "n = int(input())\nd = {}\nfor _ in range(n):\n    k, v = input().split()\n    d[k] = v\nkey = input()\n# Print value or 'Key not found'\n",
+    "testCases": [
+      { "input": "3\nname Alice\nage 25\ncity Delhi\nname", "output": "Alice" },
+      { "input": "2\na 1\nb 2\nc", "output": "Key not found" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-DICT-502",
     "title": "Delete Key Value",
-    "description": "Delete key-value pair.",
+    "description": "Given a dictionary and a key to delete, remove the key-value pair and print remaining pairs.",
     "language": "Python",
     "category": "Python - Dictionary",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nNext n lines: key value\nLast line: key to delete",
+    "outputFormat": "Remaining pairs as 'key: value' one per line, sorted by key",
+    "constraints": "n <= 100",
+    "explanation": "Use del dict[key] or dict.pop(key). Print sorted items.",
+    "starterCode": "n = int(input())\nd = {}\nfor _ in range(n):\n    k, v = input().split()\n    d[k] = v\nkey = input()\n# Delete and print\n",
+    "testCases": [
+      { "input": "3\nname Alice\nage 25\ncity Delhi\nage", "output": "city: Delhi\nname: Alice" },
+      { "input": "2\na 1\nb 2\na", "output": "b: 2" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-DICT-503",
     "title": "Merge Two Dictionaries",
-    "description": "Merge two dicts.",
+    "description": "Merge two dictionaries. If same key exists in both, keep the value from the second dict.",
     "language": "Python",
     "category": "Python - Dictionary",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n1\nNext n1 lines: key value\nNext line: n2\nNext n2 lines: key value",
+    "outputFormat": "Merged dict as 'key: value' sorted by key",
+    "constraints": "n1, n2 <= 100",
+    "explanation": "Use {**dict1, **dict2} or dict1.update(dict2).",
+    "starterCode": "n1 = int(input())\nd1 = {}\nfor _ in range(n1):\n    k, v = input().split()\n    d1[k] = v\nn2 = int(input())\nd2 = {}\nfor _ in range(n2):\n    k, v = input().split()\n    d2[k] = v\n# Merge and print\n",
+    "testCases": [
+      { "input": "2\na 1\nb 2\n2\nb 3\nc 4", "output": "a: 1\nb: 3\nc: 4" },
+      { "input": "1\nx 10\n1\ny 20", "output": "x: 10\ny: 20" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-DICT-504",
     "title": "Dictionary Comprehension",
-    "description": "Create dictionary using comprehension.",
+    "description": "Given a list of numbers, create a dictionary mapping each number to its square using dict comprehension.",
     "language": "Python",
     "category": "Python - Dictionary",
     "difficulty": "Medium",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "key: value pairs sorted by key, one per line",
+    "constraints": "n <= 100",
+    "explanation": "{x: x**2 for x in numbers}",
+    "starterCode": "n = int(input())\nnums = list(map(int, input().split()))\n# Use dict comprehension\n",
+    "testCases": [
+      { "input": "4\n1 2 3 4", "output": "1: 1\n2: 4\n3: 9\n4: 16" },
+      { "input": "3\n5 3 1", "output": "1: 1\n3: 9\n5: 25" }
+    ]
   },
   {
-    "topic":"Python",
+    "topic": "Python",
     "problemId": "PY-DICT-505",
     "title": "Lists to Dictionary",
-    "description": "Convert two lists into dictionary.",
+    "description": "Given two lists of equal length (keys and values), convert them into a dictionary and print sorted by key.",
     "language": "Python",
     "category": "Python - Dictionary",
     "difficulty": "Easy",
-    "starterCode": "# Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n keys\nThird line: n values",
+    "outputFormat": "key: value pairs sorted by key",
+    "constraints": "n <= 100",
+    "explanation": "Use dict(zip(keys, values)).",
+    "starterCode": "n = int(input())\nkeys = input().split()\nvalues = input().split()\n# Convert to dict and print\n",
+    "testCases": [
+      { "input": "3\na b c\n1 2 3", "output": "a: 1\nb: 2\nc: 3" },
+      { "input": "2\nname age\nAlice 25", "output": "age: 25\nname: Alice" }
+    ]
   },
-
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-ARR-601",
     "title": "Max and Min in Array",
-    "description": "Find maximum and minimum elements.",
+    "description": "Find and print the maximum and minimum elements of an array.",
     "language": "C",
     "category": "C - Array",
     "difficulty": "Easy",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Max: x\nMin: y",
+    "constraints": "1 <= n <= 10^5",
+    "explanation": "Iterate through array tracking max and min.",
+    "starterCode": "#include <stdio.h>\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int arr[n];\n    for(int i=0; i<n; i++) scanf(\"%d\", &arr[i]);\n    // Find max and min\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "5\n3 1 4 1 5", "output": "Max: 5\nMin: 1" },
+      { "input": "3\n10 20 30", "output": "Max: 30\nMin: 10" },
+      { "input": "1\n7", "output": "Max: 7\nMin: 7" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-ARR-602",
     "title": "Sum and Average",
-    "description": "Calculate sum and average.",
+    "description": "Calculate the sum and average of an array. Print average to 2 decimal places.",
     "language": "C",
     "category": "C - Array",
     "difficulty": "Easy",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Sum: x\nAverage: y.yy",
+    "constraints": "1 <= n <= 10^5",
+    "explanation": "Sum all elements. Average = sum / n.",
+    "starterCode": "#include <stdio.h>\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int arr[n];\n    for(int i=0; i<n; i++) scanf(\"%d\", &arr[i]);\n    // Calculate sum and average\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "4\n10 20 30 40", "output": "Sum: 100\nAverage: 25.00" },
+      { "input": "3\n1 2 3", "output": "Sum: 6\nAverage: 2.00" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-ARR-603",
     "title": "Search Element",
-    "description": "Search element in array.",
+    "description": "Search for a target element in an array. Print its index (0-based) or -1 if not found.",
     "language": "C",
     "category": "C - Array",
     "difficulty": "Easy",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers\nThird line: target",
+    "outputFormat": "Index or -1",
+    "constraints": "1 <= n <= 10^5",
+    "explanation": "Linear search through array.",
+    "starterCode": "#include <stdio.h>\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int arr[n];\n    for(int i=0; i<n; i++) scanf(\"%d\", &arr[i]);\n    int target;\n    scanf(\"%d\", &target);\n    // Search for target\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "5\n10 20 30 40 50\n30", "output": "2" },
+      { "input": "3\n1 2 3\n5", "output": "-1" },
+      { "input": "4\n5 5 5 5\n5", "output": "0" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-ARR-604",
     "title": "Separate Odd Even",
-    "description": "Separate odd and even integers.",
+    "description": "Separate odd and even integers from an array. Print all even numbers first, then odd numbers.",
     "language": "C",
     "category": "C - Array",
     "difficulty": "Medium",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Even: e1 e2 ...\nOdd: o1 o2 ...",
+    "constraints": "1 <= n <= 10^5",
+    "explanation": "Filter evens and odds separately, print each group.",
+    "starterCode": "#include <stdio.h>\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int arr[n];\n    for(int i=0; i<n; i++) scanf(\"%d\", &arr[i]);\n    // Separate and print\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "6\n1 2 3 4 5 6", "output": "Even: 2 4 6\nOdd: 1 3 5" },
+      { "input": "3\n1 3 5", "output": "Even: \nOdd: 1 3 5" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-ARR-605",
     "title": "Matrix Addition",
-    "description": "Perform matrix addition.",
+    "description": "Add two N×M matrices and print the result.",
     "language": "C",
     "category": "C - Array",
     "difficulty": "Medium",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n m\nNext n lines: row of matrix A\nNext n lines: row of matrix B",
+    "outputFormat": "Result matrix, each row on new line",
+    "constraints": "1 <= n,m <= 100",
+    "explanation": "C[i][j] = A[i][j] + B[i][j]",
+    "starterCode": "#include <stdio.h>\nint main() {\n    int n, m;\n    scanf(\"%d %d\", &n, &m);\n    int a[n][m], b[n][m];\n    for(int i=0; i<n; i++) for(int j=0; j<m; j++) scanf(\"%d\", &a[i][j]);\n    for(int i=0; i<n; i++) for(int j=0; j<m; j++) scanf(\"%d\", &b[i][j]);\n    // Add and print\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "2 2\n1 2\n3 4\n5 6\n7 8", "output": "6 8\n10 12" },
+      { "input": "1 3\n1 2 3\n4 5 6", "output": "5 7 9" }
+    ]
   },
-
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-REC-701",
     "title": "Factorial Recursion",
-    "description": "Find factorial using recursion.",
+    "description": "Find factorial of N using recursion.",
     "language": "C",
     "category": "C - Recursion",
     "difficulty": "Easy",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Single integer N",
+    "outputFormat": "N!",
+    "constraints": "0 <= N <= 15",
+    "explanation": "factorial(n) = n * factorial(n-1), base case factorial(0) = 1",
+    "starterCode": "#include <stdio.h>\nlong long factorial(int n) {\n    // Write recursive function here\n}\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    printf(\"%lld\\n\", factorial(n));\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "5", "output": "120" },
+      { "input": "0", "output": "1" },
+      { "input": "10", "output": "3628800" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-REC-702",
     "title": "Fibonacci Recursion",
-    "description": "Find fibonacci.",
+    "description": "Find the Nth Fibonacci number using recursion. F(0)=0, F(1)=1.",
     "language": "C",
     "category": "C - Recursion",
     "difficulty": "Easy",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Single integer N",
+    "outputFormat": "Nth Fibonacci number",
+    "constraints": "0 <= N <= 20",
+    "explanation": "fib(n) = fib(n-1) + fib(n-2)",
+    "starterCode": "#include <stdio.h>\nint fib(int n) {\n    // Write recursive function here\n}\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    printf(\"%d\\n\", fib(n));\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "6", "output": "8" },
+      { "input": "0", "output": "0" },
+      { "input": "10", "output": "55" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-REC-703",
     "title": "Power Recursion",
-    "description": "Calculate power.",
+    "description": "Calculate base^exp using recursion.",
     "language": "C",
     "category": "C - Recursion",
     "difficulty": "Medium",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Two integers: base exp",
+    "outputFormat": "base^exp",
+    "constraints": "0 <= base, exp <= 15",
+    "explanation": "power(b, e) = b * power(b, e-1), base case power(b, 0) = 1",
+    "starterCode": "#include <stdio.h>\nlong long power(int base, int exp) {\n    // Write recursive function here\n}\nint main() {\n    int b, e;\n    scanf(\"%d %d\", &b, &e);\n    printf(\"%lld\\n\", power(b, e));\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "2 10", "output": "1024" },
+      { "input": "3 3", "output": "27" },
+      { "input": "5 0", "output": "1" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-REC-704",
-    "title": "GCD Euclid",
-    "description": "Find GCD using recursion.",
+    "title": "GCD using Euclid",
+    "description": "Find GCD of two numbers using Euclid's recursive algorithm.",
     "language": "C",
     "category": "C - Recursion",
     "difficulty": "Medium",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Two integers a b",
+    "outputFormat": "GCD",
+    "constraints": "1 <= a, b <= 10^9",
+    "explanation": "gcd(a, b) = gcd(b, a%b), base case gcd(a, 0) = a",
+    "starterCode": "#include <stdio.h>\nint gcd(int a, int b) {\n    // Write recursive function here\n}\nint main() {\n    int a, b;\n    scanf(\"%d %d\", &a, &b);\n    printf(\"%d\\n\", gcd(a, b));\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "48 18", "output": "6" },
+      { "input": "100 75", "output": "25" },
+      { "input": "7 3", "output": "1" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-REC-705",
     "title": "Tower of Hanoi",
-    "description": "Solve Tower of Hanoi.",
+    "description": "Print all moves to solve Tower of Hanoi with N disks. Move from rod A to C using B as auxiliary.",
     "language": "C",
     "category": "C - Recursion",
     "difficulty": "Hard",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Single integer N",
+    "outputFormat": "Each move as: Move disk d from X to Y",
+    "constraints": "1 <= N <= 10",
+    "explanation": "hanoi(n, from, to, aux): move n-1 to aux, move disk n to target, move n-1 from aux to target",
+    "starterCode": "#include <stdio.h>\nvoid hanoi(int n, char from, char to, char aux) {\n    // Write recursive function here\n}\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    hanoi(n, 'A', 'C', 'B');\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "2", "output": "Move disk 1 from A to B\nMove disk 2 from A to C\nMove disk 1 from B to C" },
+      { "input": "1", "output": "Move disk 1 from A to C" }
+    ]
   },
-
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-PTR-801",
     "title": "Swap Using Pointer",
-    "description": "Swap two numbers using pointers.",
+    "description": "Swap two numbers using pointers and print the result.",
     "language": "C",
     "category": "C - Pointer",
     "difficulty": "Easy",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "Two integers a b",
+    "outputFormat": "a=y b=x (swapped values)",
+    "constraints": "-10^9 <= a, b <= 10^9",
+    "explanation": "Pass addresses to swap function. Use temp variable.",
+    "starterCode": "#include <stdio.h>\nvoid swap(int *a, int *b) {\n    // Write here\n}\nint main() {\n    int a, b;\n    scanf(\"%d %d\", &a, &b);\n    swap(&a, &b);\n    printf(\"a=%d b=%d\\n\", a, b);\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "3 7", "output": "a=7 b=3" },
+      { "input": "100 200", "output": "a=200 b=100" },
+      { "input": "0 0", "output": "a=0 b=0" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-PTR-802",
     "title": "Max Using Pointer",
-    "description": "Find maximum element using pointer.",
+    "description": "Find the maximum element in an array using pointer arithmetic.",
     "language": "C",
     "category": "C - Pointer",
     "difficulty": "Easy",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Maximum element",
+    "constraints": "1 <= n <= 10^5",
+    "explanation": "Use pointer to traverse array. Track max value.",
+    "starterCode": "#include <stdio.h>\nint findMax(int *arr, int n) {\n    // Use pointer arithmetic\n}\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int arr[n];\n    for(int i=0; i<n; i++) scanf(\"%d\", &arr[i]);\n    printf(\"%d\\n\", findMax(arr, n));\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "5\n3 1 4 1 5", "output": "5" },
+      { "input": "3\n-1 -5 -3", "output": "-1" },
+      { "input": "1\n42", "output": "42" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-PTR-803",
     "title": "Reverse Array Using Pointer",
-    "description": "Reverse array using pointer.",
+    "description": "Reverse an array using pointer arithmetic and print the result.",
     "language": "C",
     "category": "C - Pointer",
     "difficulty": "Medium",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Reversed array space-separated",
+    "constraints": "1 <= n <= 10^5",
+    "explanation": "Use two pointers (start and end). Swap while start < end.",
+    "starterCode": "#include <stdio.h>\nvoid reverse(int *arr, int n) {\n    // Use pointer arithmetic\n}\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int arr[n];\n    for(int i=0; i<n; i++) scanf(\"%d\", &arr[i]);\n    reverse(arr, n);\n    for(int i=0; i<n; i++) printf(\"%d \", arr[i]);\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "5\n1 2 3 4 5", "output": "5 4 3 2 1 " },
+      { "input": "3\n10 20 30", "output": "30 20 10 " },
+      { "input": "1\n7", "output": "7 " }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-PTR-804",
     "title": "String Length Without strlen",
-    "description": "Find string length using pointer.",
+    "description": "Find the length of a string using pointer arithmetic without using strlen().",
     "language": "C",
     "category": "C - Pointer",
     "difficulty": "Medium",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "A string",
+    "outputFormat": "Length as integer",
+    "constraints": "Length <= 10^5",
+    "explanation": "Start at string pointer, increment until null character '\\0'. Count steps.",
+    "starterCode": "#include <stdio.h>\nint strLen(char *s) {\n    // Use pointer arithmetic, no strlen\n}\nint main() {\n    char s[100001];\n    scanf(\"%s\", s);\n    printf(\"%d\\n\", strLen(s));\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "hello", "output": "5" },
+      { "input": "Python", "output": "6" },
+      { "input": "a", "output": "1" }
+    ]
   },
   {
-    "topic":"C",
+    "topic": "C",
     "problemId": "C-PTR-805",
     "title": "Second Largest Using Pointer",
-    "description": "Find second largest element.",
+    "description": "Find the second largest distinct element using pointer arithmetic. If none, print -1.",
     "language": "C",
     "category": "C - Pointer",
     "difficulty": "Medium",
-    "starterCode": "// Write code here\n"
+    "inputFormat": "First line: n\nSecond line: n integers",
+    "outputFormat": "Second largest or -1",
+    "constraints": "1 <= n <= 10^5",
+    "explanation": "Use pointers to track first and second largest as you scan.",
+    "starterCode": "#include <stdio.h>\nint secondLargest(int *arr, int n) {\n    // Use pointer traversal\n}\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int arr[n];\n    for(int i=0; i<n; i++) scanf(\"%d\", &arr[i]);\n    printf(\"%d\\n\", secondLargest(arr, n));\n    return 0;\n}\n",
+    "testCases": [
+      { "input": "5\n3 1 4 1 5", "output": "4" },
+      { "input": "3\n5 5 5", "output": "-1" },
+      { "input": "2\n1 2", "output": "1" }
+    ]
   }
 ]
