@@ -1,120 +1,109 @@
-import React, { useRef, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import io from "socket.io-client";
+import React, { useRef, useState, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import Webcam from 'react-webcam';
+import io from 'socket.io-client';
+import { Camera, CheckCircle, Loader } from 'lucide-react';
 
-// UPDATE: Aapka current laptop IP aur backend path
-const socket = io("http://10.160.108.166:8000", {
-  path: "/ws/socket.io",
-  transports: ["websocket"] // Connection stability ke liye
-});
+// Pure .env variable (Ensure VITE_AI_URL has your IP, e.g., http://172.16.52.107:8000)
+const AI_URL = import.meta.env.VITE_AI_URL; 
 
 const Lens = () => {
   const { problemId } = useParams();
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [status, setStatus] = useState("Tap to Start Camera");
-  const [isStreaming, setIsStreaming] = useState(false);
+  const webcamRef = useRef(null);
+  const [status, setStatus] = useState('idle'); // idle, analyzing, sent
 
-  const startCamera = async () => {
-    try {
-      setStatus("Requesting Camera...");
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { 
-          facingMode: "environment", // Back camera use karne ke liye
-          width: { ideal: 640 },
-          height: { ideal: 480 }
-        }
+  const captureAndSend = useCallback(() => {
+    if (!webcamRef.current) return;
+    
+    // 1. Snapshot click karo
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (!imageSrc) return;
+
+    setStatus('analyzing');
+
+    // 2. Socket connect karo
+    const socket = io(AI_URL, { path: "/ws/socket.io" });
+    
+    // 🚨 BUG FIX: Wait for connection to establish before emitting!
+    socket.on("connect", () => {
+      console.log("Socket connected, sending frame...");
+      
+      socket.emit("lens_frame", {
+        frame: imageSrc,
+        problemId: problemId
       });
 
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        // Mobile browsers par manually play() call karna padta hai
-        await videoRef.current.play();
-        setStatus("Live: Streaming to Sutra AI");
-        setIsStreaming(true);
-        
-        // Socket room join karein
-        socket.emit("join_problem", { problemId });
-      }
-    } catch (err) {
-      console.error("Camera Error:", err);
-      setStatus("Camera Error: " + err.message);
-    }
-  };
+      // 3. Image successfully bhejne ke 2 second baad UI update aur disconnect
+      setTimeout(() => {
+        setStatus('sent');
+        socket.disconnect();
+      }, 2000);
+    });
 
-  useEffect(() => {
-    let interval;
-    if (isStreaming) {
-      interval = setInterval(() => {
-        captureAndSendFrame();
-      }, 3000); // 3 seconds interval
-    }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isStreaming, problemId]);
+    socket.on("connect_error", (err) => {
+      console.error("Socket Connection Error:", err);
+      setStatus('idle');
+      alert("Backend se connect nahi ho paaya! Check IP in .env");
+    });
 
-  const captureAndSendFrame = () => {
-    if (!videoRef.current || !isStreaming) return;
-
-    const canvas = document.createElement("canvas");
-    canvas.width = videoRef.current.videoWidth;
-    canvas.height = videoRef.current.videoHeight;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(videoRef.current, 0, 0);
-    
-    // Image quality 0.4 rakhi hai taaki upload fast ho
-    const frameData = canvas.toDataURL("image/jpeg", 0.4);
-    socket.emit("lens_frame", { frame: frameData, problemId });
-    console.log("Frame sent for:", problemId);
-  };
+  }, [problemId]);
 
   return (
-    <div 
-      className="h-screen bg-black flex flex-col items-center justify-center p-6 text-white font-sans overflow-hidden"
-      onClick={!isStreaming ? startCamera : null} // Screen tap karne par camera start hoga
-    >
-      {/* Phone Case Style UI */}
-      <div className="relative w-full aspect-[3/4] max-w-sm rounded-[3rem] border-[6px] border-zinc-800 overflow-hidden shadow-2xl shadow-cyan-500/20 bg-zinc-900">
-        <video 
-          ref={videoRef} 
-          autoPlay 
-          muted 
-          playsInline 
+    <div className="h-screen bg-black text-white flex flex-col items-center justify-center relative overflow-hidden">
+      
+      {/* Header */}
+      <div className="absolute top-0 w-full h-16 bg-zinc-950 border-b border-zinc-900 flex items-center justify-center z-10 shadow-lg">
+        <h1 className="text-xl font-black italic tracking-widest text-cyan-400">SUTRA LENS</h1>
+      </div>
+
+      {/* Camera Viewfinder */}
+      <div className="relative w-[90%] max-w-md aspect-[3/4] bg-zinc-900 rounded-[2rem] overflow-hidden border-2 border-zinc-800 shadow-[0_0_30px_rgba(0,190,255,0.15)] mt-10">
+        <Webcam
+          audio={false}
+          ref={webcamRef}
+          screenshotFormat="image/jpeg"
+          videoConstraints={{ facingMode: "environment" }} // Back camera use karega
           className="w-full h-full object-cover"
         />
         
-        {/* Status Overlay */}
-        <div className="absolute top-6 left-6 flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-          <div className={`w-2 h-2 rounded-full ${isStreaming ? 'bg-red-500 animate-pulse' : 'bg-yellow-500'}`} />
-          <span className="text-[10px] font-bold tracking-widest uppercase">{status}</span>
-        </div>
-
-        {!isStreaming && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-            <div className="text-center">
-              <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-cyan-400 font-bold animate-bounce">TAP TO START</p>
-            </div>
+        {/* Scanning Overlay Effect */}
+        <div className="absolute inset-0 border-4 border-cyan-500/30 rounded-[2rem] pointer-events-none"></div>
+        {status === 'analyzing' && (
+          <div className="absolute inset-0 bg-cyan-500/20 animate-pulse pointer-events-none flex flex-col items-center justify-center backdrop-blur-sm">
+            <Loader size={48} className="animate-spin text-cyan-400 mb-4" />
+            <p className="font-bold tracking-widest uppercase text-sm text-cyan-400">Sending to Laptop...</p>
+          </div>
+        )}
+        {status === 'sent' && (
+          <div className="absolute inset-0 bg-green-500/80 pointer-events-none flex flex-col items-center justify-center backdrop-blur-sm">
+            <CheckCircle size={56} className="text-white mb-4" />
+            <p className="font-black tracking-widest uppercase text-lg text-white">Analyzed!</p>
+            <p className="text-xs font-bold text-white/80 mt-2 uppercase tracking-wider">Check your Laptop Screen</p>
           </div>
         )}
       </div>
 
-      {/* Bottom Info */}
-      <div className="mt-10 text-center">
-        <h2 className="text-2xl font-black italic uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500">
-          Sutra Lens
-        </h2>
-        <div className="mt-2 space-y-1">
-          <p className="text-cyan-500 text-[10px] font-bold uppercase tracking-[2px]">
-            Problem ID: {problemId || "Not Selected"}
-          </p>
-          <p className="text-zinc-500 text-[9px] uppercase tracking-[1px] leading-relaxed">
-            Keep your phone steady over your code or screen<br/>
-            Frames are analyzed in real-time by AI
-          </p>
-        </div>
+      {/* Instructions */}
+      <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-[2px] mt-8 text-center px-8">
+        Point at your code/notes, keep it steady, and tap analyze.
+      </p>
+
+      {/* Big Action Button */}
+      <div className="absolute bottom-10 w-full flex justify-center z-10">
+        <button 
+          onClick={captureAndSend}
+          disabled={status !== 'idle'}
+          className={`flex items-center gap-3 px-8 py-4 rounded-full font-black text-lg tracking-widest uppercase transition-all transform active:scale-95 shadow-2xl ${
+            status === 'idle' 
+              ? 'bg-cyan-500 text-black shadow-cyan-500/50 hover:bg-cyan-400' 
+              : 'bg-zinc-800 text-zinc-500'
+          }`}
+        >
+          <Camera size={24} />
+          {status === 'idle' ? 'Analyze Code' : 'Done'}
+        </button>
       </div>
+
     </div>
   );
 };

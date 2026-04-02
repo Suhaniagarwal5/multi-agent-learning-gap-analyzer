@@ -1,18 +1,13 @@
-node_modules/
-.env
-dist/
-build/
-
-
-
 # Secrets — NEVER commit these
 .env
 client/.env
+ai-server/.env  # <-- Backend ka env explicitly add kar diya
 
 # Dependencies — too large, auto-reinstalled
 node_modules/
 client/node_modules/
 ai-server/venv/
+ai-server/env/
 
 # Python cache
 __pycache__/
@@ -20,3 +15,8 @@ __pycache__/
 
 # Build output
 dist/
+build/
+
+# Editor / System files (Nayi lines)
+.DS_Store
+.vscode/

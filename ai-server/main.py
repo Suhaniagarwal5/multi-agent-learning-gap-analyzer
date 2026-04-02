@@ -6,26 +6,20 @@ from typing import List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from core.hints import get_level_hint
+
+from core.ai_tutor import get_level_hint
 from core.search import perform_fuzzy_search, fuzzy_match_strings
 
-# ── 1. Create Socket.IO server ────────────────────────────────
-sio = socketio.AsyncServer(
-    async_mode='asgi',
-    cors_allowed_origins='*'
-)
+sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*')
+fastapi_app = FastAPI()
 
-# ── 2. Create FastAPI app ─────────────────────────────────────
-app = FastAPI()
-
-app.add_middleware(
+fastapi_app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ── Request Models ────────────────────────────────────────────
 class SearchRequest(BaseModel):
     query: str
     topic: str
@@ -39,15 +33,20 @@ class HintRequest(BaseModel):
     code: str = ""
     problem: str = ""
     description: str = ""
+    voice_query: str = "" 
 
-# ── HTTP Routes ───────────────────────────────────────────────
-
-@app.post("/ai/hint")
+@fastapi_app.post("/ai/hint")
 async def ai_hint(req: HintRequest):
-    hint = get_level_hint(req.level, req.code, req.problem, req.description)
+    hint = get_level_hint(
+        level=req.level, 
+        code=req.code, 
+        problem_title=req.problem, 
+        description=req.description,
+        voice_query=req.voice_query # Pass it to ai_tutor
+    )
     return {"hint": hint}
 
-@app.post("/api/search")
+@fastapi_app.post("/api/search")
 async def search_endpoint(req: SearchRequest):
     try:
         file_path = os.path.join(os.path.dirname(__file__), "problems.json")
@@ -58,16 +57,14 @@ async def search_endpoint(req: SearchRequest):
     except Exception as e:
         return {"error": str(e), "results": []}
 
-@app.post("/api/match-strings")
+@fastapi_app.post("/api/match-strings")
 async def match_strings_endpoint(req: StringMatchRequest):
     results = fuzzy_match_strings(req.query, req.targets)
     return {"results": results}
 
-@app.get("/health")
+@fastapi_app.get("/health")
 async def health():
     return {"status": "ok"}
-
-# ── Socket.IO Events ──────────────────────────────────────────
 
 @sio.on("connect")
 async def handle_connect(sid, environ):
@@ -96,10 +93,14 @@ async def handle_lens_frame(sid, data):
     )
     await sio.emit("lens_hint", {"hint": hint}, room=problem_id)
 
-# ── 3. Wrap everything in Socket.IO ASGI app ─────────────────
-# This is the KEY fix — wrap the entire app, not just mount at /ws
-combined_app = socketio.ASGIApp(
+app = socketio.ASGIApp(
     sio,
-    other_asgi_app=app,
+    other_asgi_app=fastapi_app,
     socketio_path='/ws/socket.io'
 )
+# Terminal mein run karne ke liye:
+# cd ai-server
+# uvicorn main:app --reload
+
+# for ip config
+# uvicorn main:app --host 0.0.0.0 --port 8000 --reload
