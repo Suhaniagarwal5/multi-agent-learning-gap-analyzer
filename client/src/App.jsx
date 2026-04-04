@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Lens from './pages/Lens';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import NotFound from './pages/NotFound';
+import BottomNav from './components/BottomNav';
 
 // Protected Route (FIXED)
 const ProtectedRoute = ({ children }) => {
@@ -31,11 +32,12 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Layout
+
 const Layout = ({ children }) => (
   <>
     <Navbar />
     {children}
+    <BottomNav />
   </>
 );
 
