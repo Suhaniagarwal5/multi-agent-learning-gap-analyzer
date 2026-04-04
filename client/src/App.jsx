@@ -9,6 +9,7 @@ import Achievements from './pages/Achievements';
 import Login from './pages/Login';
 import Lens from './pages/Lens';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import NotFound from './pages/NotFound';
 
 // Protected Route (FIXED)
 const ProtectedRoute = ({ children }) => {
@@ -88,8 +89,7 @@ function App() {
           } />
 
           {/* Catch-all route */}
-          <Route path="*" element={<Navigate to="/login" />} />
-
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </AuthProvider>
