@@ -44,8 +44,8 @@ def ingest_books():
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     texts = text_splitter.split_documents(documents)
 
-    print("🧠 Starting LOCAL Embeddings (No Google API needed for this step)...")
-    # THE MAGIC FIX: Local AI model. Never 404s. Never fails.
+    print("🧠 Starting LOCAL Embeddings (Fast & Free)...")
+    # THE MAGIC FIX: Local AI model. Never 404s.
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
     db = FAISS.from_documents(texts, embeddings)
@@ -65,11 +65,11 @@ def ask_sutra_rag(query):
 
     # DIRECT FAISS SEARCH
     db = FAISS.load_local(DB_FAISS_PATH, embeddings, allow_dangerous_deserialization=True)
-    matched_docs = db.similarity_search(query, k=6)
+    matched_docs = db.similarity_search(query, k=5)
 
     context_text = "\n\n".join([doc.page_content for doc in matched_docs])
 
-    # Use Google Gemini ONLY for generating the text answer (Which we know works for you!)
+    # 100% GOOGLE GEMINI GENERATION (The Hackathon Requirement)
     genai.configure(api_key=get_gemini_api_key())
     model = genai.GenerativeModel('gemini-2.5-flash')
 
