@@ -1,0 +1,38 @@
+{
+    "courses": [
+      {
+        "id": "dsa",
+        "title": "DSA",
+        "description": "Master Data Structures and Algorithms",
+        "categories": [
+          {
+            "name": "Stack",
+            "questions": [
+              { "id": 1, "title": "Valid Parentheses", "level": "Easy" },
+              { "id": 2, "title": "Min Stack", "level": "Medium" }
+            ]
+          },
+          {
+            "name": "Queue",
+            "questions": [
+              { "id": 3, "title": "Implement Queue", "level": "Easy" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "title": "Python",
+        "description": "Learn Python from basics to advanced",
+        "categories": [
+          {
+            "name": "Strings",
+            "questions": [
+              { "id": 4, "title": "Reverse String", "level": "Easy" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  
