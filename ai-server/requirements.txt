@@ -1,6 +1,20 @@
+# --- Core Server ---
 fastapi
 uvicorn
-thefuzz
-python-levenshtein
-pandas
-numpy
+python-dotenv
+
+# --- AI & Vision ---
+google-generativeai
+Pillow
+
+# --- WebSockets (Sutra Lens) ---
+python-socketio
+python-socketio[asgi]
+
+# --- RAG Engine (Upgraded to fix Windows 'pwd' bug) ---
+langchain>=0.1.16
+langchain-community>=0.0.34
+langchain-core>=0.1.45
+langchain-google-genai
+faiss-cpu
+pypdf
