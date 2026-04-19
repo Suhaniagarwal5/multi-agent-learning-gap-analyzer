@@ -131,11 +131,16 @@ const TopicList = () => {
   };
 
   const handleBack = () => {
+  if (selectedCategory) {
+    // If inside a category → go back to category list
     setSearchTerm("");
     setSelectedCategory(null);
     fetchInitialData();
-  };
-
+  } else {
+    // If on category list → go back to courses page
+    navigate("/courses");
+  }
+};
   // ── DERIVED VALUES ────────────────────────────────────────
 
   const displayProblems = problems.filter((p) => p.category === selectedCategory);
