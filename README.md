@@ -104,6 +104,37 @@ Type `"sort without extra space"` → get in-place sorting problems.
 
 ---
 
+### 6. RAG-Powered AI Tutor — Answers Grounded in Your Syllabus
+
+Sutra AI includes a **Retrieval-Augmented Generation (RAG)** tutor backed by real textbooks. Rather than generating answers purely from Gemini's general training data, it first retrieves relevant passages from your course's actual PDFs before composing a response.
+
+**How it works:**
+1. Textbooks for each course are stored in `ai-server/data/books/`
+2. At startup, they are chunked and embedded into a **FAISS vector index** — a high-speed similarity search library from Meta. Each chunk becomes a numerical vector; similar chunks end up close together in vector space
+3. When you ask the AI Tutor a question, the question is also embedded and the FAISS index finds the most relevant textbook passages
+4. Those passages are injected into the Gemini prompt as grounding context
+5. Gemini answers using both its general knowledge and the retrieved textbook content — keeping explanations aligned with your syllabus, not just generic internet answers
+
+| Course | Books Indexed |
+|--------|--------------|
+| DSA | Algorithms (Jeff Erickson) · ODS Python |
+| Python | Byte of Python · Think Python 2 |
+| C | Essential C · Modern C |
+
+---
+
+### 7. Plagiarism Detection — Academic Integrity Built In
+
+`plagiarism.py` in the AI backend analyzes submitted code for structural similarity against a reference corpus. The engine goes beyond simple string matching — it compares code at a syntactic level so that variable renaming and whitespace changes do not evade detection. Results are surfaced through the `PlagReport` page in the frontend, accessible to instructors reviewing submissions.
+
+---
+
+### 8. Smart Rating System — Scores That Reflect Real Understanding
+
+A weighted rating engine (`server/utils/ratingEngine.js`) computes each user's score using multiple signals: problem difficulty, hints used, solve time, and whether AI assistance was involved. Ratings are stored in the `UserRating` collection and drive the global leaderboard — so the score reflects genuine problem-solving ability, not just how many problems were submitted.
+
+---
+
 ## Architecture
 
 Sutra AI runs three servers simultaneously, each with a distinct responsibility:
@@ -167,6 +198,9 @@ Node.js handles fast database operations (MongoDB reads and progress writes). Py
 | Database | MongoDB | Document model fits the problem schema naturally |
 | AI Backend | FastAPI + Uvicorn | Async Python, fast startup, auto-generates API docs |
 | AI Engine | Google Gemini 1.5 Pro | Handles both text and image input in one API |
+| RAG Engine | LangChain + FAISS | Retrieves relevant textbook passages before prompting Gemini |
+| Vector Store | FAISS (Facebook AI) | Millisecond nearest-neighbour search over embedded PDF chunks |
+| Rating Engine | Custom (Node.js) | Weighted scoring across difficulty, hints, solve time, AI usage |
 | Fuzzy Search | TheFuzz (Levenshtein) | Intent-based search without a dedicated search engine |
 | Mobile Bridge | PIL + base64 | JPEG frame capture → Gemini Vision input |
 
@@ -464,15 +498,20 @@ multi-agent-learning-gap-analyzer/
 │   │   ├── context/
 │   │   │   └── AuthContext.jsx      # Firebase auth state — Google + email login
 │   │   ├── components/
-│   │   │   └── Navbar.jsx
+│   │   │   ├── BottomNav.jsx        # Mobile bottom navigation bar
+│   │   │   ├── Navbar.jsx
+│   │   │   └── RatingCard.jsx       # Displays user rating and rank
 │   │   ├── pages/
-│   │   │   ├── Login.jsx            # Auth page (Google OAuth + email/password)
+│   │   │   ├── Auth.jsx             # Unified auth page
+│   │   │   ├── Home.jsx             # Landing / home screen
+│   │   │   ├── Login.jsx            # Google OAuth + email/password login
 │   │   │   ├── CourseSelect.jsx     # Course picker — DSA / Python / C
 │   │   │   ├── TopicList.jsx        # Category cards + problem list + fuzzy search
 │   │   │   ├── IDE.jsx              # Monaco editor + hints + voice + Lens QR
 │   │   │   ├── Lens.jsx             # Mobile camera page — captures and emits frames
 │   │   │   ├── Dashboard.jsx        # Analytics — heatmap, radar, leaderboard
-│   │   │   └── Achievements.jsx     # XP, badges, streaks
+│   │   │   ├── Achievements.jsx     # XP, badges, streaks
+│   │   │   └── PlagReport.jsx       # Plagiarism detection results view
 │   │   ├── firebase.js
 │   │   └── main.jsx
 │   └── .env
@@ -480,8 +519,12 @@ multi-agent-learning-gap-analyzer/
 ├── server/                          # Node.js + Express backend
 │   ├── models/
 │   │   ├── Problem.js               # MongoDB schema for problems
-│   │   └── UserProgress.js          # MongoDB schema — compound unique index on userId+problemId
-│   ├── index.js                     # All routes: problems, progress, dashboard
+│   │   ├── UserProgress.js          # MongoDB schema — compound unique index on userId+problemId
+│   │   ├── CodeSubmission.js        # Stores raw code submissions per user per problem
+│   │   └── UserRating.js            # Weighted rating score per user
+│   ├── utils/
+│   │   └── ratingEngine.js          # Computes weighted score: difficulty × hints × time × AI usage
+│   ├── index.js                     # All routes: problems, progress, dashboard, ratings
 │   ├── seed.js                      # One-time database seeder
 │   ├── problems.json                # 173 problems across DSA / Python / C
 │   └── .env
@@ -490,7 +533,18 @@ multi-agent-learning-gap-analyzer/
     ├── core/
     │   ├── hints.py                 # Gemini prompt templates for levels 1–4
     │   ├── search.py                # TheFuzz fuzzy search engine
-    │   └── rag_engine.py            # Stub — future LangChain RAG integration
+    │   ├── ai_tutor.py              # RAG tutor — retrieves from FAISS, prompts Gemini
+    │   ├── plagiarism.py            # Code similarity / plagiarism detection engine
+    │   └── rag_engine.py            # LangChain pipeline — PDF ingestion + FAISS index builder
+    ├── data/
+    │   └── books/
+    │       ├── dsa/                 # Algorithms-JeffE.pdf · ods-python.pdf
+    │       ├── python/              # byte-of-python.pdf · thinkpython2.pdf
+    │       └── c/                   # EssentialC.pdf · modernC.pdf
+    ├── vectorstore/
+    │   └── db_faiss/
+    │       ├── index.faiss          # Pre-built FAISS vector index over all PDFs
+    │       └── index.pkl            # Metadata map — chunk → source document + page
     ├── main.py                      # FastAPI app + Socket.IO server + all routes
     ├── requirements.txt
     └── .env
@@ -504,10 +558,10 @@ multi-agent-learning-gap-analyzer/
 |-------------------|-------------|
 | Code execution is simulated — no real test case runner | Integrate [Judge0 API](https://judge0.com/) for actual compilation and test evaluation |
 | Achievements page uses hardcoded mock data | Connect to the same `UserProgress` collection as Dashboard |
-| Gemini API key is hardcoded in `hints.py` | Move to `ai-server/.env` (in progress) |
+| Gemini API key is hardcoded in `hints.py` | Move fully to `ai-server/.env` |
 | `TopicList` fetches all problems and filters client-side | Push filtering to the database via `/api/problems/course/:name` |
 | No feedback loop between code execution and hints | Feed Judge0 output back into Gemini for context-aware, test-aware hints |
-| `rag_engine.py` is a stub | Integrate LangChain + syllabus PDFs for curriculum-aware hint generation |
+| FAISS index must be rebuilt manually after adding new books | Add a `/admin/rebuild-index` endpoint that re-ingests PDFs on demand |
 
 ---
 
