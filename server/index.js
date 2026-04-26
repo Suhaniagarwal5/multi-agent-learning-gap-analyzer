@@ -12,6 +12,8 @@ require('dotenv').config();
 const Problem        = require('./models/Problem');
 const UserProgress   = require('./models/UserProgress');
 const CodeSubmission = require('./models/CodeSubmission');
+const UserRating     = require('./models/UserRating');
+const { computeRating } = require('./utils/ratingEngine');
 
 const app = express();
 app.use(cors());
@@ -331,6 +333,41 @@ app.get('/api/dashboard/:userId', async (req, res) => {
       hard:   solved.some(p => p.difficulty === 'Hard'   && p.solveTimeSeconds > 0 && p.solveTimeSeconds <= 900),
     };
 
+    // ── 11. RATING COMPUTATION ────────────────────────────────
+    const easySolved       = diffMap.Easy   || 0;
+    const mediumSolved     = diffMap.Medium || 0;
+    const hardSolved       = diffMap.Hard   || 0;
+    const uniqueCategories = Object.keys(catSolvedMap).length;
+    const uniqueCourses    = [...new Set(solved.map(p => p.topic).filter(Boolean))].length;
+
+    const ratingSignals = {
+      totalSolved,
+      easySolved,
+      mediumSolved,
+      hardSolved,
+      hintsUsed,
+      avgSolveTime,
+      currentStreak,
+      longestStreak,
+      uniqueCategories,
+      uniqueCourses,
+      pureSolves,
+    };
+
+    const ratingResult = computeRating(ratingSignals);
+
+    await UserRating.findOneAndUpdate(
+      { userId },
+      {
+        rating:     ratingResult.rating,
+        rank:       ratingResult.rank,
+        subScores:  ratingResult.subScores,
+        signals:    ratingResult.signals,
+        computedAt: new Date(),
+      },
+      { upsert: true, new: true }
+    );
+
     // ── FINAL RESPONSE ────────────────────────────────────────
     res.json({
       stats: {
@@ -342,12 +379,12 @@ app.get('/api/dashboard/:userId', async (req, res) => {
         hintsUsed,
         avgSolveTime,
         completionRate,
-        // 👇 NEW FIELDS ADDED HERE 👇
         pureSolves,
         dsaSolved,
         totalUsers,
         speedBadges,
       },
+      rating: ratingResult,
       difficulty,
       skillRadar,
       weeklyActivity,
@@ -445,6 +482,35 @@ app.get("/api/submissions/:problemId", async (req, res) => {
   } catch (err) {
     console.error("Fetch submissions error:", err);
     res.status(500).json({ error: err.message });
+  }
+});
+
+
+// ════════════════════════════════════════════════════════════
+// RATING ROUTES
+// ════════════════════════════════════════════════════════════
+
+// GET /api/rating/:userId — fetch stored rating for one user
+app.get('/api/rating/:userId', async (req, res) => {
+  try {
+    const rating = await UserRating.findOne({ userId: req.params.userId }).lean();
+    if (!rating) return res.status(404).json({ message: 'No rating found yet' });
+    res.json(rating);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// GET /api/rating/leaderboard — top 20 users by Sutra Rating
+app.get('/api/rating/leaderboard', async (req, res) => {
+  try {
+    const top = await UserRating.find({})
+      .sort({ rating: -1 })
+      .limit(20)
+      .lean();
+    res.json(top);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 

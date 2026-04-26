@@ -10,6 +10,7 @@ import {
   Award, Star
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import RatingCard from '../components/RatingCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
@@ -76,6 +77,29 @@ const MOCK_DATA = {
     { rank: 12, name: 'You',        points: 1250, streak: 7,  avatar: '★', isUser: true },
     { rank: 13, name: 'Sneha T.',  points: 1190, streak: 5,  avatar: 'S' },
   ],
+  rating: {
+    rating: 420,
+    rank: 'Engineer',
+    subScores: {
+      proficiency:  58,
+      efficiency:   47,
+      consistency:  62,
+      breadth:      35,
+      independence: 40,
+    },
+    weights: {
+      proficiency:  0.35,
+      efficiency:   0.25,
+      consistency:  0.20,
+      breadth:      0.12,
+      independence: 0.08,
+    },
+    signals: {
+      totalSolved: 45, easySolved: 22, mediumSolved: 18, hardSolved: 5,
+      hintsUsed: 23, avgSolveTime: 18, currentStreak: 7, longestStreak: 14,
+      uniqueCategories: 6, uniqueCourses: 2, pureSolves: 18,
+    },
+  },
   heatmapData: (() => {
     const d = {};
     const today = new Date();
@@ -400,7 +424,7 @@ const Dashboard = () => {
     load();
   }, [user]);
 
-  const tabs = ['overview', 'skills', 'activity'];
+  const tabs = ['overview', 'skills', 'activity', 'rating'];
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -453,11 +477,18 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
 
         {/* ── PRIMARY STAT CARDS ───────────────────────── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           <StatCard icon={<Target size={18} />}  label="Total Solved"   value={data.stats.totalSolved}                        sub={`${data.stats.completionRate}% completion`}      accentColor="#00E5FF" />
           <StatCard icon={<Flame size={18} />}   label="Current Streak" value={`${data.stats.currentStreak}d`}                sub={`Best: ${data.stats.longestStreak} days`}         accentColor="#F97316" />
           <StatCard icon={<Trophy size={18} />}  label="Global Rank"    value={`#${data.stats.globalRank}`}                   sub="Based on total points"                            accentColor="#FBBF24" />
           <StatCard icon={<Star size={18} />}    label="Total Points"   value={(data.stats.totalPoints || 0).toLocaleString()} sub="Easy ×10 · Med ×20 · Hard ×40"                  accentColor="#A855F7" />
+          <StatCard
+  icon={<TrendingUp size={18} />}
+  label="Your Rating"
+  value={data.rating?.rating ?? '—'}
+  sub={data.rating?.rank ?? 'Solve problems to get rated'}
+  accentColor="#EF9F27"
+/>
         </div>
 
         {/* ── SECONDARY STATS ──────────────────────────── */}
@@ -621,6 +652,54 @@ const Dashboard = () => {
                 <RecentActivity data={data.recentActivity} />
                 <Leaderboard data={data.leaderboard} />
               </div>
+            </motion.div>
+          )}
+          {activeTab === 'rating' && (
+            <motion.div key="rating"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="space-y-5">
+ 
+              {/* Full rating card */}
+              <RatingCard rating={data.rating} />
+ 
+              {/* How the rating works — breakdown table */}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+                <h3 className="text-[11px] font-black text-zinc-400 uppercase tracking-[0.2em] flex items-center gap-2 mb-5">
+                  <span className="text-cyan-500"><TrendingUp size={14} /></span> How your rating is calculated
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    { label: 'Proficiency',  weight: '35%', desc: 'Easy×10 + Medium×25 + Hard×50 pts, minus hint penalty',  score: data.rating?.subScores?.proficiency  ?? 0 },
+                    { label: 'Efficiency',   weight: '25%', desc: 'Speed vs difficulty baseline, combined with hint ratio',  score: data.rating?.subScores?.efficiency   ?? 0 },
+                    { label: 'Consistency',  weight: '20%', desc: 'Current streak + all-time longest streak',                score: data.rating?.subScores?.consistency  ?? 0 },
+                    { label: 'Breadth',      weight: '12%', desc: 'Unique categories (60%) + unique courses (40%)',          score: data.rating?.subScores?.breadth      ?? 0 },
+                    { label: 'Independence', weight: '8%',  desc: 'Ratio of problems solved without using any hints',       score: data.rating?.subScores?.independence ?? 0 },
+                  ].map(row => (
+                    <div key={row.label} className="flex items-center gap-4 py-2 border-b border-zinc-800/60 last:border-0">
+                      <div className="w-28 shrink-0">
+                        <p className="text-xs font-bold text-zinc-200">{row.label}</p>
+                        <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-bold">{row.weight} weight</p>
+                      </div>
+                      <p className="text-[11px] text-zinc-500 flex-1">{row.desc}</p>
+                      <div className="shrink-0 flex items-center gap-2">
+                        <div className="w-16 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                          <motion.div
+                            className="h-full rounded-full bg-cyan-500"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${row.score}%` }}
+                            transition={{ duration: 1, delay: 0.1 }}
+                          />
+                        </div>
+                        <span className="text-xs font-black text-zinc-300 w-8 text-right">{row.score}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[10px] text-zinc-700 mt-4 text-center">
+                  Rating recalculates each time you load the dashboard · Stored in database
+                </p>
+              </div>
+ 
             </motion.div>
           )}
 
