@@ -196,7 +196,10 @@ const ActivityHeatmap = ({ heatmapData = {} }) => {
   };
 
   const months = [];
-  for (let m = offset + 3; m >= offset; m--) {
+  // CHANGED: We now loop for 12 months instead of 4 (offset + 11 instead of offset + 3)
+  const monthsToShow = 12; 
+  
+  for (let m = offset + (monthsToShow - 1); m >= offset; m--) {
     const ref = new Date();
     ref.setDate(1);
     ref.setMonth(ref.getMonth() - m);
@@ -231,7 +234,9 @@ const ActivityHeatmap = ({ heatmapData = {} }) => {
           </button>
         </div>
       </div>
-      <div className="flex gap-5 overflow-x-auto pb-2">
+      
+      {/* The scrollable container */}
+      <div className="flex gap-5 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
         {months.map(({ label, cells }) => (
           <div key={label} className="flex flex-col gap-1.5 shrink-0">
             <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">{label}</span>
@@ -589,7 +594,12 @@ const Dashboard = () => {
                 <SectionCard title="Skill Radar" icon={<Zap size={14} />}>
                   <div className="h-72">
                     <ResponsiveContainer>
-                      <RadarChart cx="50%" cy="50%" outerRadius="78%" data={data.skillRadar}>
+                      <RadarChart 
+                        cx="50%" 
+                        cy="50%" 
+                        outerRadius="78%" 
+                        data={data.skillRadar && data.skillRadar.length > 0 ? data.skillRadar : MOCK_DATA.skillRadar}
+                      >
                         <PolarGrid stroke="#27272a" />
                         <PolarAngleAxis dataKey="subject"
                           tick={{ fill: '#71717a', fontSize: 11, fontWeight: 700 }} />

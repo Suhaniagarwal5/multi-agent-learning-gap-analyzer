@@ -206,23 +206,90 @@ app.get('/api/dashboard/:userId', async (req, res) => {
       solved: catSolvedMap[c._id.category]?.solved || 0,
     })).filter(c => c.name); 
 
-    // ── 5. SKILL RADAR ────────────────────────────────────────
-    const skillMap = {
-      Logic:    ['Arrays', 'Linked Lists', 'Heaps'],
-      Syntax:   ['Strings', 'Basics'],
-      'Optim.': ['Dynamic Programming', 'Greedy'],
-      Debug:    ['Trees', 'Graphs'],
-      Patterns: ['Sorting', 'Searching'],
-      Analysis: ['Complexity', 'System Design'],
+     // ── 5. SKILL RADAR (Dynamic Data-Driven Computation) ──────
+    const radarScores = {
+      "Data Structs": { earned: 0, target: 20 },
+      "Algorithms":   { earned: 0, target: 20 },
+      "Syntax & Mem": { earned: 0, target: 15 },
+      "Sys Design":   { earned: 0, target: 10 },
     };
 
-    const skillRadar = Object.entries(skillMap).map(([skill, cats]) => {
-      const totalInSkill  = catTotals.filter(c => cats.includes(c._id.category)).reduce((s, c) => s + c.count, 0);
-      const solvedInSkill = cats.reduce((s, cat) => s + (catSolvedMap[cat]?.solved || 0), 0);
-      const score = totalInSkill > 0 ? Math.round((solvedInSkill / totalInSkill) * 100) : 0;
-      return { subject: skill, score, fullMark: 100 };
+    let optimizationScore = 50; // Base score
+    let hardSolvedCount = 0;
+    let totalHardCount = 0;
+
+    // Strict mapping based on your problems.json
+    const categoryMapping = {
+      "Data Structs": ['Linked List', 'Heap', 'Stack', 'Graph', 'Hashing', 'Python - Dictionary'],
+      "Algorithms":   ['Binary Search', 'Greedy', 'Deque', 'C - Recursion'],
+      "Syntax & Mem": ['Python - String', 'Python - List', 'Python - Function', 'Python - Regex', 'C - Array', 'C - Pointer'],
+      "Sys Design":   ['Design']
+    };
+
+    const difficultyWeights = { 'Easy': 1, 'Medium': 2, 'Hard': 4 };
+
+    allProgress.forEach(p => {
+      if (!p.category) return;
+
+      const isSolved = p.status === 'solved';
+      const weight = difficultyWeights[p.difficulty] || 1;
+      const hints = p.hintsUsed || 0;
+
+      // Track Resilience (Handling Hard Problems)
+      if (p.difficulty === 'Hard') {
+        totalHardCount++;
+        if (isSolved) hardSolvedCount++;
+      }
+
+      if (isSolved) {
+        // Calculate points with a penalty for using hints
+        // 0 hints = 100% points, >=3 hints caps at 40% points
+        const hintMultiplier = Math.max(0.4, 1 - (hints * 0.2));
+        const points = weight * hintMultiplier;
+
+        // Optimization Adjustments
+        if (hints === 0 && weight >= 2) optimizationScore += 5; // Reward clean Med/Hard solves
+        if (hints >= 2) optimizationScore -= 3; // Penalize heavy hint usage
+
+        let matched = false;
+        // Distribute points to the specific skill bucket
+        for (const [axis, categories] of Object.entries(categoryMapping)) {
+          if (categories.includes(p.category)) {
+            radarScores[axis].earned += points;
+            matched = true;
+            break;
+          }
+        }
+
+        // Fallback for uncategorized problems
+        if (!matched) {
+          const catLow = p.category.toLowerCase();
+          if (catLow.includes('list') || catLow.includes('array') || catLow.includes('stack') || catLow.includes('heap') || catLow.includes('dict')) {
+            radarScores["Data Structs"].earned += points;
+          } else if (catLow.includes('search') || catLow.includes('greedy') || catLow.includes('recurse')) {
+            radarScores["Algorithms"].earned += points;
+          } else {
+            radarScores["Syntax & Mem"].earned += points;
+          }
+        }
+      }
     });
 
+    // Helper to safely cap scores between 10 (floor) and 100 (ceiling)
+    const cap = (val) => Math.min(100, Math.max(10, Math.round(val)));
+
+    // Calculate Resilience: Base 20 + 80% depending on Hard problem solve rate + bonus for raw hard solves
+    const resilienceRate = totalHardCount === 0 ? 0 : (hardSolvedCount / totalHardCount);
+    const resilienceScore = 20 + (resilienceRate * 80) + (hardSolvedCount * 5);
+
+    const skillRadar = [
+      { subject: 'Data Structs', score: cap((radarScores["Data Structs"].earned / radarScores["Data Structs"].target) * 100), fullMark: 100 },
+      { subject: 'Algorithms',   score: cap((radarScores["Algorithms"].earned / radarScores["Algorithms"].target) * 100), fullMark: 100 },
+      { subject: 'Syntax & Mem', score: cap((radarScores["Syntax & Mem"].earned / radarScores["Syntax & Mem"].target) * 100), fullMark: 100 },
+      { subject: 'Sys Design',   score: cap((radarScores["Sys Design"].earned / radarScores["Sys Design"].target) * 100), fullMark: 100 },
+      { subject: 'Optimization', score: cap(optimizationScore), fullMark: 100 },
+      { subject: 'Resilience',   score: cap(resilienceScore), fullMark: 100 }
+    ];
     // ── 6. WEEKLY ACTIVITY ────────────────────────────────────
     const weeklyActivity = [];
     for (let w = 7; w >= 0; w--) {
