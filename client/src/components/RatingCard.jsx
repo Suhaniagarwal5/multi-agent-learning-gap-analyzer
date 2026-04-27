@@ -1,244 +1,142 @@
-// client/src/components/RatingCard.jsx
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Zap, Flame, BookOpen, Shield } from 'lucide-react';
+import { TrendingUp, Zap, Flame, BookOpen, Shield, Target } from 'lucide-react';
 
-// ── Config ──────────────────────────────────────────────────
 const RANK_COLORS = {
-  Newcomer:    { color: '#888780', glow: 'rgba(136,135,128,0.2)'  },
-  Learner:     { color: '#5DCAA5', glow: 'rgba(93,202,165,0.2)'   },
-  Coder:       { color: '#00E5FF', glow: 'rgba(0,229,255,0.2)'    },
-  Builder:     { color: '#3B8BD4', glow: 'rgba(59,139,212,0.2)'   },
-  Engineer:    { color: '#7F77DD', glow: 'rgba(127,119,221,0.25)' },
-  Architect:   { color: '#EF9F27', glow: 'rgba(239,159,39,0.25)'  },
-  Veteran:     { color: '#D85A30', glow: 'rgba(216,90,48,0.25)'   },
-  Expert:      { color: '#D4537E', glow: 'rgba(212,83,126,0.25)'  },
-  Master:      { color: '#E24B4A', glow: 'rgba(226,75,74,0.3)'    },
-  Grandmaster: { color: '#FFD700', glow: 'rgba(255,215,0,0.35)'   },
+  Newcomer:    { color: '#888780', glow: 'rgba(136,135,128,0.1)'  },
+  Learner:     { color: '#5DCAA5', glow: 'rgba(93,202,165,0.1)'   },
+  Coder:       { color: '#00E5FF', glow: 'rgba(0,229,255,0.1)'    },
+  Builder:     { color: '#3B8BD4', glow: 'rgba(59,139,212,0.1)'   },
+  Engineer:    { color: '#7F77DD', glow: 'rgba(127,119,221,0.15)' },
+  Architect:   { color: '#EF9F27', glow: 'rgba(239,159,39,0.15)'  },
+  Veteran:     { color: '#D85A30', glow: 'rgba(216,90,48,0.15)'   },
+  Expert:      { color: '#D4537E', glow: 'rgba(212,83,126,0.15)'  },
+  Master:      { color: '#E24B4A', glow: 'rgba(226,75,74,0.2)'    },
+  Grandmaster: { color: '#FFD700', glow: 'rgba(255,215,0,0.25)'   },
 };
 
+// Colors matched to your second reference image
 const SUB_SCORE_META = [
-  { key: 'proficiency',  label: 'Proficiency',  icon: TrendingUp, weight: '35%', tip: 'Weighted by difficulty (Hard×5 > Easy×1)'       },
-  { key: 'efficiency',   label: 'Efficiency',   icon: Zap,        weight: '25%', tip: 'Speed + low hint usage'                         },
-  { key: 'consistency',  label: 'Consistency',  icon: Flame,      weight: '20%', tip: 'Daily streaks — current & longest'              },
-  { key: 'breadth',      label: 'Breadth',      icon: BookOpen,   weight: '12%', tip: 'Variety of topics and courses'                  },
-  { key: 'independence', label: 'Independence', icon: Shield,     weight: '8%',  tip: 'Problems solved with zero hints'                },
+  { key: 'proficiency',  label: 'Proficiency',  icon: TrendingUp, weight: '35%', color: '#737373' },
+  { key: 'efficiency',   label: 'Efficiency',   icon: Zap,        weight: '25%', color: '#EAB308' },
+  { key: 'consistency',  label: 'Consistency',  icon: Flame,      weight: '20%', color: '#F97316' },
+  { key: 'breadth',      label: 'Breadth',      icon: BookOpen,   weight: '12%', color: '#A855F7' },
+  { key: 'independence', label: 'Independence', icon: Shield,     weight: '8%',  color: '#14B8A6' },
 ];
 
-// ── Animated radial dial ────────────────────────────────────
 function RatingDial({ rating, rank }) {
   const rankCfg = RANK_COLORS[rank] || RANK_COLORS.Newcomer;
-  const radius  = 72;
-  const stroke  = 8;
-  const cx = 90;
-  const cy = 90;
+  const radius = 75;
+  const stroke = 4; // Thinner stroke for a cleaner look
+  const cx = 95;
+  const cy = 95;
   const circ = 2 * Math.PI * radius;
-  // We use 75% of the full circle (270°) for the arc
-  const arcFrac  = 0.75;
+  const arcFrac = 0.75;
   const dashFull = circ * arcFrac;
   const dashFill = (rating / 1000) * dashFull;
 
-  // Rotate so the arc starts at bottom-left (225°)
-  const rotation = 135;
-
   return (
-    <div style={{ position: 'relative', width: 180, height: 180, flexShrink: 0 }}>
-      <svg width="180" height="180" viewBox="0 0 180 180">
-        {/* Track */}
+    <div style={{ position: 'relative', width: 190, height: 160 }}>
+      <svg width="190" height="190" viewBox="0 0 190 190">
         <circle
           cx={cx} cy={cy} r={radius}
           fill="none"
-          stroke="var(--color-border-tertiary)"
+          stroke="#1F1F1F"
           strokeWidth={stroke}
           strokeDasharray={`${dashFull} ${circ - dashFull}`}
-          strokeDashoffset={0}
           strokeLinecap="round"
-          transform={`rotate(${rotation} ${cx} ${cy})`}
+          transform="rotate(135 95 95)"
         />
-        {/* Fill — animated */}
         <motion.circle
           cx={cx} cy={cy} r={radius}
           fill="none"
           stroke={rankCfg.color}
           strokeWidth={stroke}
           strokeDasharray={`${dashFill} ${circ}`}
-          strokeDashoffset={0}
           strokeLinecap="round"
-          transform={`rotate(${rotation} ${cx} ${cy})`}
+          transform="rotate(135 95 95)"
           initial={{ strokeDasharray: `0 ${circ}` }}
           animate={{ strokeDasharray: `${dashFill} ${circ}` }}
-          transition={{ duration: 1.6, ease: 'easeOut', delay: 0.2 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
         />
       </svg>
-      {/* Center text */}
       <div style={{
-        position: 'absolute', inset: 0,
-        display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        gap: 2
+        position: 'absolute', top: '45%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        textAlign: 'center'
       }}>
-        <motion.span
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          style={{ fontSize: 34, fontWeight: 500, color: rankCfg.color, lineHeight: 1 }}
-        >
-          {rating}
-        </motion.span>
-        <span style={{ fontSize: 11, color: 'var(--color-text-secondary)', letterSpacing: '0.12em' }}>
-          / 1000
-        </span>
-        <span style={{
-          fontSize: 11, fontWeight: 500,
-          color: rankCfg.color,
-          marginTop: 2,
-          letterSpacing: '0.06em'
+        <div style={{ fontSize: 10, color: '#737373', letterSpacing: '0.1em', marginBottom: 4 }}>SUTRA RATING</div>
+        <div style={{ fontSize: 48, fontWeight: 700, color: '#FFFFFF', lineHeight: 1 }}>{rating}</div>
+        <div style={{ fontSize: 12, color: '#737373', marginTop: 4 }}>/ 1000</div>
+        <div style={{ 
+          marginTop: 12, fontSize: 11, fontWeight: 600, color: rankCfg.color, 
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+          padding: '4px 12px', border: `1px solid ${rankCfg.color}44`, borderRadius: 20
         }}>
           {rank}
-        </span>
+        </div>
       </div>
     </div>
   );
 }
 
-// ── Sub-score bar ───────────────────────────────────────────
-function SubScoreBar({ meta, score }) {
-  const Icon = meta.icon;
+function SubScoreLine({ meta, score }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Icon size={12} style={{ color: 'var(--color-text-secondary)' }} />
-          <span style={{ fontSize: 12, color: 'var(--color-text-primary)', fontWeight: 500 }}>
-            {meta.label}
-          </span>
-          <span style={{
-            fontSize: 10, color: 'var(--color-text-tertiary)',
-            background: 'var(--color-background-secondary)',
-            border: '0.5px solid var(--color-border-tertiary)',
-            borderRadius: 4, padding: '1px 5px'
-          }}>
-            {meta.weight}
-          </span>
-        </div>
-        <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--color-text-primary)' }}>
-          {score}
-        </span>
+    <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr 30px', alignItems: 'center', gap: 15, height: 32 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <meta.icon size={14} style={{ color: '#525252' }} />
+        <span style={{ fontSize: 12, color: '#A3A3A3', fontWeight: 500 }}>{meta.label}</span>
       </div>
-      {/* Bar track */}
-      <div style={{
-        height: 5, borderRadius: 3,
-        background: 'var(--color-background-tertiary)',
-        overflow: 'hidden'
-      }}>
+      <div style={{ height: 4, background: '#171717', borderRadius: 2, position: 'relative' }}>
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${score}%` }}
-          transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-          style={{
-            height: '100%', borderRadius: 3,
-            background: score >= 70
-              ? 'var(--color-text-success)'
-              : score >= 40
-              ? '#EF9F27'
-              : 'var(--color-text-danger)',
-          }}
+          style={{ height: '100%', background: meta.color, borderRadius: 2, boxShadow: `0 0 8px ${meta.color}44` }}
         />
       </div>
-      {/* Tooltip hint */}
-      <span style={{ fontSize: 10, color: 'var(--color-text-tertiary)' }}>{meta.tip}</span>
+      <span style={{ fontSize: 12, fontWeight: 600, color: '#FFFFFF', textAlign: 'right' }}>{score}</span>
     </div>
   );
 }
 
-// ── Main RatingCard ─────────────────────────────────────────
 export default function RatingCard({ rating: ratingData }) {
   if (!ratingData) return null;
-
-  const { rating = 0, rank = 'Newcomer', subScores = {}, weights = {} } = ratingData;
-  const rankCfg = RANK_COLORS[rank] || RANK_COLORS.Newcomer;
-
-  // What to improve — find lowest sub-score
-  const lowest = [...SUB_SCORE_META].sort(
-    (a, b) => (subScores[a.key] || 0) - (subScores[b.key] || 0)
-  )[0];
+  const { rating = 0, rank = 'Newcomer', subScores = {} } = ratingData;
+  const lowest = [...SUB_SCORE_META].sort((a, b) => (subScores[a.key] || 0) - (subScores[b.key] || 0))[0];
 
   return (
     <div style={{
-      background: 'var(--color-background-primary)',
-      border: '0.5px solid var(--color-border-tertiary)',
-      borderRadius: 'var(--border-radius-lg)',
-      padding: '1.25rem',
-      position: 'relative',
-      overflow: 'hidden',
+      background: '#0A0A0A',
+      border: '1px solid #1F1F1F',
+      borderRadius: 16,
+      padding: '24px',
+      color: '#FFFFFF',
+      fontFamily: 'Inter, system-ui, sans-serif'
     }}>
-      {/* Subtle rank glow in top-right */}
-      <div style={{
-        position: 'absolute', top: 0, right: 0,
-        width: 200, height: 200, borderRadius: '50%',
-        background: rankCfg.glow,
-        transform: 'translate(40%, -40%)',
-        pointerEvents: 'none',
-      }} />
-
-      {/* Header */}
-      <p style={{
-        fontSize: 11, fontWeight: 500, letterSpacing: '0.18em',
-        color: 'var(--color-text-secondary)',
-        textTransform: 'uppercase',
-        marginBottom: '1rem'
-      }}>
-        Sutra Rating
-      </p>
-
-      {/* Dial + sub-scores row */}
-      <div style={{
-        display: 'flex', gap: '1.5rem', alignItems: 'flex-start',
-        flexWrap: 'wrap',
-      }}>
-        {/* Dial */}
+      <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap' }}>
+        {/* Left Section: Dial */}
         <RatingDial rating={rating} rank={rank} />
 
-        {/* Sub-scores */}
-        <div style={{ flex: 1, minWidth: 220, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {/* Right Section: Bars */}
+        <div style={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           {SUB_SCORE_META.map(meta => (
-            <SubScoreBar
-              key={meta.key}
-              meta={meta}
-              score={subScores[meta.key] || 0}
-            />
+            <SubScoreLine key={meta.key} meta={meta} score={subScores[meta.key] || 0} />
           ))}
+          
+          {/* Target Suggestion integrated directly below bars */}
+          <div style={{ 
+            marginTop: 20, padding: '12px 16px', background: '#111111', 
+            borderRadius: 12, border: '1px solid #1F1F1F', display: 'flex', alignItems: 'center', gap: 12
+          }}>
+            <div style={{ pading: 8, borderRadius: '50%', background: '#1F1F1F' }}><Target size={16} color="#3B8BD4" /></div>
+            <div>
+              <div style={{ fontSize: 10, color: '#737373', textTransform: 'uppercase' }}>Target Area</div>
+              <div style={{ fontSize: 12, color: '#E5E5E5' }}>
+                Focus on <span style={{ fontWeight: 600, color: '#FFFFFF' }}>{lowest?.label}</span> to boost your rating.
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Insight strip */}
-      <div style={{
-        marginTop: '1.25rem',
-        padding: '10px 14px',
-        background: 'var(--color-background-secondary)',
-        border: '0.5px solid var(--color-border-tertiary)',
-        borderRadius: 'var(--border-radius-md)',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        flexWrap: 'wrap', gap: 8
-      }}>
-        <div>
-          <p style={{ fontSize: 11, color: 'var(--color-text-secondary)', margin: '0 0 2px' }}>
-            Focus area to improve your rating
-          </p>
-          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-text-primary)', margin: 0 }}>
-            {lowest?.label} — {lowest?.tip}
-          </p>
-        </div>
-        <span style={{
-          fontSize: 11, fontWeight: 500,
-          color: rankCfg.color,
-          border: `0.5px solid ${rankCfg.color}`,
-          borderRadius: 'var(--border-radius-md)',
-          padding: '3px 10px',
-          background: rankCfg.glow,
-        }}>
-          {rank}
-        </span>
       </div>
     </div>
   );
