@@ -8,15 +8,16 @@ exports.saveProgress = async (req, res) => {
       userId, displayName, problemId, problemTitle,
       topic, category, difficulty, status,
       solveTimeSeconds, hintsUsed, lensUsed, voiceUsed,
-      code, language, testCasesPassed, totalTestCases
+      code, language, testCasesPassed, totalTestCases, isPlagiarized
     } = req.body;
 
     // ── SCORING & PARTIAL POINTS LOGIC ──
     let passedCases = testCasesPassed !== undefined ? testCasesPassed : (status === 'solved' ? 1 : 0);
     let totalCases = totalTestCases || 1; 
 
-    // 1. Base Score
-    let baseScore = difficulty === 'Hard' ? 45 : difficulty === 'Medium' ? 30 : 15;
+    // 1. Base Score (Case insensitive to avoid errors)
+    let diffStr = difficulty ? difficulty.toLowerCase() : 'medium';
+    let baseScore = diffStr === 'hard' ? 45 : diffStr === 'medium' ? 30 : 15;
 
     // 2. Hint Deductions
     let hintDeduction = 0;
@@ -38,10 +39,20 @@ exports.saveProgress = async (req, res) => {
     if (multiplier === 1) finalStatus = 'solved';
     else if (multiplier > 0) finalStatus = 'partially_solved';
 
+    // 🔴 PLAGIARISM PENALTY LOGIC 🔴
+    if (isPlagiarized === true) {
+        finalPoints = -50; 
+        finalStatus = 'plagiarized'; 
+    }
+
     // ── DB UPDATE ──
     let existingProgress = await UserProgress.findOne({ userId, problemId });
-    // Keep highest score if user resubmits
-    let highestPoints = existingProgress ? Math.max(existingProgress.pointsEarned || 0, finalPoints) : finalPoints;
+    
+    // IMPORTANT FIX: Keep highest score UNLESS they plagiarized, then force penalty
+    let highestPoints = finalPoints;
+    if (existingProgress && isPlagiarized !== true) {
+        highestPoints = Math.max(existingProgress.pointsEarned || 0, finalPoints);
+    }
 
     const update = {
       displayName, problemTitle, topic, category, difficulty,

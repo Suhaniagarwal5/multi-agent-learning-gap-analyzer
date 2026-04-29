@@ -17,12 +17,7 @@ import axios from 'axios';
 const NODE_URL = import.meta.env.VITE_NODE_URL || 'http://localhost:5000';
 
 // ─────────────────────────────────────────────────────────
-// MOCK DATA — realistic, shown when:
-//   (a) user is not logged in, OR
-//   (b) server is offline, OR
-//   (c) user has zero real activity yet
-// Replace nothing — this is the fallback.
-// Real data from API will automatically override this.
+// MOCK DATA
 // ─────────────────────────────────────────────────────────
 const MOCK_DATA = {
   stats: {
@@ -79,12 +74,10 @@ const MOCK_DATA = {
   heatmapData: (() => {
     const d = {};
     const today = new Date();
-    // seed with deterministic-ish data so it looks consistent
     for (let i = 0; i < 180; i++) {
       const day = new Date(today);
       day.setDate(day.getDate() - i);
       const key = day.toISOString().split('T')[0];
-      // use index math instead of Math.random() so it's stable
       const activity = ((i * 7) % 10);
       d[key] = activity > 6 ? (activity > 8 ? 3 : 2) : activity > 4 ? 1 : 0;
     }
@@ -122,7 +115,6 @@ const StatCard = ({ icon, label, value, sub, accentColor = '#00E5FF' }) => (
     whileHover={{ y: -4, transition: { duration: 0.2 } }}
     className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-3 relative overflow-hidden h-full"
   >
-    {/* top accent line */}
     <div className="absolute top-0 left-0 w-full h-[2px]"
       style={{ background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)` }} />
     <div className="w-10 h-10 rounded-xl flex items-center justify-center border border-zinc-700"
@@ -315,11 +307,9 @@ const Leaderboard = ({ data = [] }) => (
     {!data.length ? <EmptyPrompt message="No leaderboard data yet." /> : (
       <div className="space-y-1.5">
         {data.map((entry, i) => {
-          // Spacer row
           if (!entry.name) return (
             <div key={`gap-${i}`} className="text-center text-zinc-700 text-xs py-0.5 tracking-widest">• • •</div>
           );
-          // Rank badge color
           const rankClass =
             entry.rank === 1 ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/30' :
             entry.rank === 2 ? 'text-zinc-300 bg-zinc-400/10 border-zinc-400/30' :
@@ -365,22 +355,14 @@ const Leaderboard = ({ data = [] }) => (
 // ─────────────────────────────────────────────────────────
 const Dashboard = () => {
   const { user } = useAuth();
-  // NOTE: We do NOT use `loading` from AuthContext here because
-  // AuthContext already blocks rendering children until Firebase
-  // is ready (line: {!loading && children} in AuthProvider).
-  // So by the time Dashboard mounts, auth is 100% resolved.
-
-  const [data,      setData]      = useState(MOCK_DATA); // start with mock
+  const [data,      setData]      = useState(MOCK_DATA); 
   const [fetching,  setFetching]  = useState(false);
-  const [isReal,    setIsReal]    = useState(false);     // is data from API?
+  const [isReal,    setIsReal]    = useState(false);     
   const [error,     setError]     = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    // No user → keep showing mock data (demo mode)
     if (!user) return;
-
-    // User exists → try to fetch real data
     const load = async () => {
       setFetching(true);
       setError(null);
@@ -389,14 +371,12 @@ const Dashboard = () => {
         setData(res.data);
         setIsReal(true);
       } catch (err) {
-        // Server down or error → keep mock data, show warning
         setError('Server offline — showing demo data');
         setIsReal(false);
       } finally {
         setFetching(false);
       }
     };
-
     load();
   }, [user]);
 
@@ -418,7 +398,6 @@ const Dashboard = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Status badge */}
             {fetching && (
               <span className="text-[10px] text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-3 py-1.5 rounded-full font-bold animate-pulse">
                 Loading your data...
@@ -435,7 +414,6 @@ const Dashboard = () => {
               </span>
             )}
 
-            {/* Tab switcher */}
             <div className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-xl p-1">
               {tabs.map(tab => (
                 <button key={tab} onClick={() => setActiveTab(tab)}
@@ -457,7 +435,15 @@ const Dashboard = () => {
           <StatCard icon={<Target size={18} />}  label="Total Solved"   value={data.stats.totalSolved}                        sub={`${data.stats.completionRate}% completion`}      accentColor="#00E5FF" />
           <StatCard icon={<Flame size={18} />}   label="Current Streak" value={`${data.stats.currentStreak}d`}                sub={`Best: ${data.stats.longestStreak} days`}         accentColor="#F97316" />
           <StatCard icon={<Trophy size={18} />}  label="Global Rank"    value={`#${data.stats.globalRank}`}                   sub="Based on total points"                            accentColor="#FBBF24" />
-          <StatCard icon={<Star size={18} />}    label="Total Points"   value={(data.stats.totalPoints || 0).toLocaleString()} sub="Easy ×10 · Med ×20 · Hard ×40"                  accentColor="#A855F7" />
+          
+          {/* 🔴 UPDATED POINTS CARD WITH NEW 15-30-45 LOGIC 🔴 */}
+          <StatCard 
+            icon={<Star size={18} />}    
+            label="Total Points"   
+            value={(data.stats.totalPoints || 0).toLocaleString()} 
+            sub="Easy 15 · Med 30 · Hard 45 · Lens +3"                  
+            accentColor="#A855F7" 
+          />
         </div>
 
         {/* ── SECONDARY STATS ──────────────────────────── */}
