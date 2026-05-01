@@ -17,27 +17,58 @@ const NODE_URL = import.meta.env.VITE_NODE_URL || 'http://localhost:5000';
 
 const MOCK_DATA = {
   stats: {
-    totalSolved: 0, currentStreak: 0, longestStreak: 0,
-    globalRank: 0, totalPoints: 0, hintsUsed: 0,
-    avgSolveTime: 0, completionRate: 0,
+    totalSolved: 45, currentStreak: 7, longestStreak: 14,
+    globalRank: 12, totalPoints: 1250, hintsUsed: 23,
+    avgSolveTime: 18, completionRate: 45,
   },
   difficulty: [
-    { name: 'Easy',   solved: 0, total: 30, color: '#00C49F' },
-    { name: 'Medium', solved: 0, total: 28, color: '#FFBB28' },
-    { name: 'Hard',   solved: 0, total: 20, color: '#FF5C5C' },
+    { name: 'Easy',   solved: 22, total: 39, color: '#00C49F' },
+    { name: 'Medium', solved: 18, total: 38, color: '#FFBB28' },
+    { name: 'Hard',   solved: 5,  total: 22, color: '#FF5C5C' },
   ],
   skillRadar: [
-    { subject: 'Logic',    score: 0, fullMark: 100 },
-    { subject: 'Syntax',   score: 0, fullMark: 100 },
-    { subject: 'Optim.',   score: 0, fullMark: 100 },
-    { subject: 'Debug',    score: 0, fullMark: 100 },
-    { subject: 'Patterns', score: 0, fullMark: 100 },
-    { subject: 'Analysis', score: 0, fullMark: 100 },
+    { subject: 'Logic',    score: 82, fullMark: 100 },
+    { subject: 'Syntax',   score: 68, fullMark: 100 },
+    { subject: 'Optim.',   score: 57, fullMark: 100 },
+    { subject: 'Debug',    score: 74, fullMark: 100 },
+    { subject: 'Patterns', score: 63, fullMark: 100 },
+    { subject: 'Analysis', score: 49, fullMark: 100 },
   ],
-  weeklyActivity: [],
-  categoryProgress: [],
-  recentActivity: [],
-  leaderboard: [],
+  weeklyActivity: [
+    { week: 'W1 Jan', solved: 4,  hints: 8  },
+    { week: 'W2 Jan', solved: 7,  hints: 5  },
+    { week: 'W3 Jan', solved: 2,  hints: 3  },
+    { week: 'W4 Jan', solved: 9,  hints: 11 },
+    { week: 'W1 Feb', solved: 6,  hints: 4  },
+    { week: 'W2 Feb', solved: 11, hints: 7  },
+    { week: 'W3 Feb', solved: 3,  hints: 2  },
+    { week: 'W4 Feb', solved: 8,  hints: 6  },
+  ],
+  categoryProgress: [
+    { name: 'Stack',           solved: 5,  total: 12, course: 'DSA'    },
+    { name: 'Deque',           solved: 4,  total: 10, course: 'DSA'    },
+    { name: 'Binary Search',   solved: 3,  total: 7,  course: 'DSA'    },
+    { name: 'Python - List',   solved: 4,  total: 6,  course: 'Python' },
+    { name: 'Python - Dict',   solved: 3,  total: 5,  course: 'Python' },
+    { name: 'C - Array',       solved: 3,  total: 5,  course: 'C'      },
+  ],
+  recentActivity: [
+    { id: 1, title: 'Kth Largest Element',   difficulty: 'Hard',   course: 'DSA',    time: '22 min', hintsUsed: 2, status: 'solved'    },
+    { id: 2, title: 'Reverse a Linked List', difficulty: 'Easy',   course: 'DSA',    time: '8 min',  hintsUsed: 0, status: 'solved'    },
+    { id: 3, title: 'Two Sum Variants',      difficulty: 'Medium', course: 'DSA',    time: '31 min', hintsUsed: 3, status: 'solved'    },
+    { id: 4, title: 'String Compression',    difficulty: 'Medium', course: 'Python', time: '14 min', hintsUsed: 1, status: 'solved'    },
+    { id: 5, title: 'Pointer Arithmetic',    difficulty: 'Hard',   course: 'C',      time: '—',      hintsUsed: 4, status: 'attempted' },
+  ],
+  leaderboard: [
+    { rank: 1,  name: 'Arjun S.',  points: 2840, streak: 21, avatar: 'A' },
+    { rank: 2,  name: 'Priya M.',  points: 2610, streak: 18, avatar: 'P' },
+    { rank: 12, name: 'You',       points: 1250, streak: 7,  avatar: '★', isUser: true },
+  ],
+  rating: {
+    rating: 420,
+    rank: 'Engineer',
+    subScores: { proficiency: 58, efficiency: 47, consistency: 62, breadth: 35, independence: 40 },
+  },
   heatmapData: {},
 };
 
@@ -101,7 +132,9 @@ const ActivityHeatmap = ({ heatmapData = {} }) => {
     return 'bg-zinc-800/60';
   };
   const months = [];
-  for (let m = offset + 3; m >= offset; m--) {
+  const monthsToShow = 12; 
+  
+  for (let m = offset + (monthsToShow - 1); m >= offset; m--) {
     const ref = new Date(); ref.setDate(1); ref.setMonth(ref.getMonth() - m);
     const year = ref.getFullYear(); const month = ref.getMonth();
     const days = new Date(year, month + 1, 0).getDate();
@@ -127,7 +160,7 @@ const ActivityHeatmap = ({ heatmapData = {} }) => {
           <button onClick={() => setOffset(o => Math.max(0, o - 1))} className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"><ChevronRight size={14} /></button>
         </div>
       </div>
-      <div className="flex gap-5 overflow-x-auto pb-2">
+      <div className="flex gap-5 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
         {months.map(({ label, cells }) => (
           <div key={label} className="flex flex-col gap-1.5 shrink-0">
             <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">{label}</span>
