@@ -25,16 +25,20 @@ const NODE_URL = import.meta.env.VITE_NODE_URL || 'http://localhost:5000';
 // Replace nothing — this is the fallback.
 // Real data from API will automatically override this.
 // ─────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────
+// MOCK DATA — Corrected to 99 problems across 17 categories
+// ─────────────────────────────────────────────────────────
 const MOCK_DATA = {
   stats: {
     totalSolved: 45, currentStreak: 7, longestStreak: 14,
     globalRank: 12, totalPoints: 1250, hintsUsed: 23,
-    avgSolveTime: 18, completionRate: 72,
+    avgSolveTime: 18, completionRate: 45, // Updated for 99 total
   },
+  // Difficulty totals (Easy: 39, Medium: 38, Hard: 22)[cite: 3]
   difficulty: [
-    { name: 'Easy',   solved: 22, total: 30, color: '#00C49F' },
-    { name: 'Medium', solved: 18, total: 28, color: '#FFBB28' },
-    { name: 'Hard',   solved: 5,  total: 20, color: '#FF5C5C' },
+    { name: 'Easy',   solved: 22, total: 39, color: '#00C49F' },
+    { name: 'Medium', solved: 18, total: 38, color: '#FFBB28' },
+    { name: 'Hard',   solved: 5,  total: 22, color: '#FF5C5C' },
   ],
   skillRadar: [
     { subject: 'Logic',    score: 82, fullMark: 100 },
@@ -54,13 +58,28 @@ const MOCK_DATA = {
     { week: 'W3 Feb', solved: 3,  hints: 2  },
     { week: 'W4 Feb', solved: 8,  hints: 6  },
   ],
+  // Categorized by Topic: DSA (60), Python (24), C (15)
   categoryProgress: [
-    { name: 'Arrays',        solved: 12, total: 18, course: 'DSA'    },
-    { name: 'Linked Lists',  solved: 8,  total: 12, course: 'DSA'    },
-    { name: 'Trees',         solved: 5,  total: 14, course: 'DSA'    },
-    { name: 'Dynamic Prog.', solved: 3,  total: 10, course: 'DSA'    },
-    { name: 'Basics',        solved: 10, total: 12, course: 'Python' },
-    { name: 'Pointers',      solved: 7,  total: 9,  course: 'C'      },
+    // DSA — 60 Problems (9 categories)
+    { name: 'Stack',           solved: 5,  total: 12, course: 'DSA'    },
+    { name: 'Deque',           solved: 4,  total: 10, course: 'DSA'    },
+    { name: 'Binary Search',   solved: 3,  total: 7,  course: 'DSA'    },
+    { name: 'Design',          solved: 2,  total: 6,  course: 'DSA'    },
+    { name: 'Greedy',          solved: 2,  total: 6,  course: 'DSA'    },
+    { name: 'Hashing',         solved: 3,  total: 6,  course: 'DSA'    },
+    { name: 'Heap',            solved: 2,  total: 6,  course: 'DSA'    },
+    { name: 'Linked List',     solved: 2,  total: 5,  course: 'DSA'    },
+    { name: 'Graph',           solved: 1,  total: 2,  course: 'DSA'    },
+    // Python — 24 Problems (5 categories)
+    { name: 'Python - List',   solved: 4,  total: 6,  course: 'Python' },
+    { name: 'Python - Dict',   solved: 3,  total: 5,  course: 'Python' },
+    { name: 'Python - String', solved: 2,  total: 5,  course: 'Python' },
+    { name: 'Python - Func',   solved: 2,  total: 4,  course: 'Python' },
+    { name: 'Python - Regex',  solved: 1,  total: 4,  course: 'Python' },
+    // C — 15 Problems (3 categories)
+    { name: 'C - Array',       solved: 3,  total: 5,  course: 'C'      },
+    { name: 'C - Pointer',     solved: 2,  total: 5,  course: 'C'      },
+    { name: 'C - Recursion',   solved: 2,  total: 5,  course: 'C'      },
   ],
   recentActivity: [
     { id: 1, title: 'Kth Largest Element',   difficulty: 'Hard',   course: 'DSA',    time: '22 min', hintsUsed: 2, status: 'solved'    },
@@ -103,12 +122,10 @@ const MOCK_DATA = {
   heatmapData: (() => {
     const d = {};
     const today = new Date();
-    // seed with deterministic-ish data so it looks consistent
     for (let i = 0; i < 180; i++) {
       const day = new Date(today);
       day.setDate(day.getDate() - i);
       const key = day.toISOString().split('T')[0];
-      // use index math instead of Math.random() so it's stable
       const activity = ((i * 7) % 10);
       d[key] = activity > 6 ? (activity > 8 ? 3 : 2) : activity > 4 ? 1 : 0;
     }
