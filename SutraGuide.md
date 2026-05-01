@@ -11,12 +11,17 @@ To make the **Sutra Lens** (Mobile Camera) and **Voice** features work flawlessl
 ### 🟢 Terminal 1 — Cloudflare (Python AI Backend)
 ```bash
 npx cloudflared tunnel --url http://localhost:8000
+npx cloudflared tunnel --url http://127.0.0.1:8000
 ```
 📌 **Action:** Copy the generated link → looks like `https://your-random-words.trycloudflare.com`
 
 ### 🟢 Terminal 2 — Ngrok (React Frontend)
 ```bash
 ngrok http 5173
+npx localtunnel --port 5173
+ssh -R 80:localhost:5173 serveo.net
+
+https://console.serveo.net/settings?n=1&src=ssh_nudge&v=B
 ```
 📌 **Action:** Copy the **Forwarding** link → looks like `https://random-id.ngrok-free.app`
 
