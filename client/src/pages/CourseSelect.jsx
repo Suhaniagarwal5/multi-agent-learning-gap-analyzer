@@ -17,8 +17,8 @@ const courses = [
     accent: '#00E5FF',
     accentDim: 'rgba(0,229,255,0.08)',
     accentBorder: 'rgba(0,229,255,0.2)',
-    topics: ['Arrays', 'Linked Lists', 'Trees', 'Heaps', 'Graphs', 'DP'],
-    problems: 78,
+    topics: ['Stack', 'Deque', 'Binary Search', 'Heap', 'Graph', 'Linked List'],
+    problems: 60,
     difficulty: 'Advanced',
     diffColor: '#FF5C5C',
     status: 'ACTIVE',
@@ -34,8 +34,8 @@ const courses = [
     accent: '#F59E0B',
     accentDim: 'rgba(245,158,11,0.08)',
     accentBorder: 'rgba(245,158,11,0.2)',
-    topics: ['Basics', 'Strings', 'Functions', 'OOP', 'File I/O', 'Patterns'],
-    problems: 54,
+    topics: ['List', 'String', 'Function', 'Dictionary', 'Regex'],
+    problems: 24,
     difficulty: 'Beginner',
     diffColor: '#00C49F',
     status: 'ACTIVE',
@@ -51,8 +51,8 @@ const courses = [
     accent: '#8B5CF6',
     accentDim: 'rgba(139,92,246,0.08)',
     accentBorder: 'rgba(139,92,246,0.2)',
-    topics: ['Pointers', 'Memory', 'Structs', 'Recursion', 'File I/O', 'Bitwise'],
-    problems: 41,
+    topics: ['Array', 'Pointer', 'Recursion'],
+    problems: 15,
     difficulty: 'Intermediate',
     diffColor: '#FFBB28',
     status: 'ACTIVE',
@@ -205,7 +205,7 @@ const CourseSelect = () => {
           <div className="flex items-center gap-6">
             {[
               { label: 'Modules', value: '3' },
-              { label: 'Total Problems', value: '173' },
+              { label: 'Total Problems', value: '99' },
               { label: 'AI Feedback', value: 'On every submit' },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-2 hidden md:flex">

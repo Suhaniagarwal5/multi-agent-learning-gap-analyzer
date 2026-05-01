@@ -69,7 +69,18 @@ const MOCK_DATA = {
     rank: 'Engineer',
     subScores: { proficiency: 58, efficiency: 47, consistency: 62, breadth: 35, independence: 40 },
   },
-  heatmapData: {},
+  heatmapData: (() => {
+    const d = {};
+    const today = new Date();
+    for (let i = 0; i < 180; i++) {
+      const day = new Date(today);
+      day.setDate(day.getDate() - i);
+      const key = day.toISOString().split('T')[0];
+      const activity = ((i * 7) % 10);
+      d[key] = activity > 6 ? (activity > 8 ? 3 : 2) : activity > 4 ? 1 : 0;
+    }
+    return d;
+  })(),
 };
 
 const EmptyPrompt = ({ message = 'Solve a problem to see data here.' }) => (
